@@ -1,0 +1,33 @@
+<div [formGroup]="form">
+
+  <mat-form-field>
+
+      <input matInput placeholder="Tutorial title" formControlName="description" #description>
+
+      <mat-hint align="end">
+          {{ description.value.length }} / 60
+      </mat-hint>
+
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+
+      <textarea matInput placeholder="Tutorial Description" formControlName="longDescription">
+
+      </textarea>
+
+  </mat-form-field>
+
+  <mat-form-field>
+
+    <input matInput placeholder="Tutorial Field" formControlName="field" #field>
+
+  </mat-form-field>
+
+  <mat-form-field>
+
+    <input matInput placeholder="Tutorial Icon" formControlName="iconUrl" #iconUrl>
+
+  </mat-form-field>
+
+</div>

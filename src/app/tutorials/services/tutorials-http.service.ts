@@ -1,3 +1,4 @@
+import { AppState } from './../../reducers/index';
 import { Section } from './../models/Section';
 import { Tutorial } from './../models/Tutorial';
 import firebase from 'firebase/compat/app';
@@ -8,12 +9,15 @@ import {Observable, from} from "rxjs";
 import {concatMap, map} from "rxjs/operators";
 import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { convertSnaps } from './db-utils';
+import { Store } from '@ngrx/store';
+import { loadAllTutorials } from '../tutorials.actions';
+
 
 
 @Injectable()
-export class CoursesHttpService {
+export class TutorialsHttpService {
 
-    constructor(private db: AngularFirestore) {
+    constructor(private db: AngularFirestore,private store: Store<AppState>) {
 
     }
 
@@ -31,9 +35,7 @@ export class CoursesHttpService {
             .get()
             .pipe(
               map(results => {
-
                   const tutorials = convertSnaps<Tutorial>(results);
-
                   return tutorials.length == 1 ? tutorials[0] : null;
 
               })
@@ -49,21 +51,20 @@ export class CoursesHttpService {
         )
     }
 
-    deleteTutorial(tutorialId:string) {
-      return from(this.db.doc(`tutorials/${tutorialId}`).delete());
+    saveTutorial(tutorialId: string | number, changes: Partial<Tutorial>) {
+      return from(this.db.doc(`tutorials/${tutorialId}`).update(changes));
     }
+  //   deleteTutorial(tutorialId:string) {
+  //     return from(this.db.doc(`tutorials/${tutorialId}`).delete());
+  //   }
 
-    updateTutorial(tutorialId:string, changes: Partial<Tutorial>):Observable<any> {
-        return from(this.db.doc(`tutorials/${tutorialId}`).update(changes));
-    }
-
-    createTutorial(newTutorial: Partial<Tutorial>, tutorialId?:string) {
+    createTutorial(newTutorial: Partial<Tutorial>,newSections: Partial<Section[]>) {
       return this.db.collection("tutorials",
               ref => ref.orderBy("seqNo", "desc").limit(1))
           .get()
           .pipe(
               concatMap(result => {
-
+                  let tutorialId: string;
                   const tutorials = convertSnaps<Tutorial>(result);
 
                   const lastTutorialSeqNo = tutorials[0]?.seqNo ?? 0;
@@ -75,25 +76,19 @@ export class CoursesHttpService {
 
                   let save$: Observable<any>;
 
-                  if (tutorialId) {
-                      save$ = from(this.db.doc(`tutorials/${tutorialId}`).set(tutorial));
-                  }
-                  else {
-                      save$ = from(this.db.collection("tutorials").add(tutorial));
-                  }
+                  this.store.dispatch(loadAllTutorials());
+                  return this.db.collection("tutorials").add(tutorial).then((res) => {
+                    let tutId = res.id;
+                    this.db.collection("tutorials").doc(tutId).set({id: tutId,...tutorial})
+                    newSections.forEach((section)=> {
+                      this.db.collection(`tutorials/${tutId}/sections`).add(section)
+                    })
+                    return {
+                      id: res.id,
+                      ...tutorial
+                    }
+                  });
 
-                  return save$
-                      .pipe(
-                          map(res => {
-                              return {
-                                  id: tutorialId ?? res.id,
-                                  ...tutorial
-                              }
-                          })
-                      );
-
-
-              })
-          )
-  }
+          })
+        )}
 }

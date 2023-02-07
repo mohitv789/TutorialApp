@@ -1,12 +1,11 @@
 
 export interface Tutorial {
-  id: number;
+  id: string;
   seqNo:number;
   iconUrl: string;
   description: string;
   longDescription?: string;
   field: string;
-  sectionCount: number;
 }
 
 

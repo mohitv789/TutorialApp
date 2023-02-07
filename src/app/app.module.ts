@@ -1,3 +1,4 @@
+import { TutorialCreatePartBComponent } from './tutorials/tutorial-create/tutorial-create-part-b/tutorial-create-part-b.component';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -25,6 +26,14 @@ import {AngularFireFunctionsModule} from '@angular/fire/compat/functions';
 import {metaReducers, reducers} from './reducers';
 import { EntityDataModule } from '@ngrx/data';
 import { RouterState,StoreRouterConnectingModule } from '@ngrx/router-store';
+import { TutorialCreateComponent } from './tutorials/tutorial-create/tutorial-create.component';
+import { TutorialCreatePartAComponent } from './tutorials/tutorial-create/tutorial-create-part-a/tutorial-create-part-a.component';
+
+
+import {MatStepperModule} from '@angular/material/stepper';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 const routes: Routes = [
   {
       path: 'tutorials',
@@ -40,6 +49,9 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
+    TutorialCreateComponent,
+    TutorialCreatePartAComponent,
+    TutorialCreatePartBComponent
   ],
   imports: [
     BrowserModule,
@@ -52,6 +64,11 @@ const routes: Routes = [
     MatProgressSpinnerModule,
     MatListModule,
     MatToolbarModule,
+    MatStepperModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule,
     AuthModule.forRoot(),
     StoreModule.forRoot(reducers, {
       metaReducers,

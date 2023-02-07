@@ -1,13 +1,12 @@
 
 
 export interface Section {
-    id: number;
+    id: string;
     description: string;
-    duration: string;
     seqNo: number;
     tutorialId: number;
     solution: string;
-    images?: [];
+    image?: string;
 }
 
 

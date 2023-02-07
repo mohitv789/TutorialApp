@@ -1,3 +1,9 @@
+import { TutorialCreateComponent } from './tutorial-create/tutorial-create.component';
+import { TutorialEditDialogComponent } from './tutorial-edit-dialog/tutorial-edit-dialog.component';
+import { tutorialsReducer } from './reducers/tutorial.reducers';
+import { TutorialsEffects } from './tutorials.effects';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {HomeComponent} from './home/home.component';
@@ -17,74 +23,80 @@ import { MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {RouterModule, Routes} from '@angular/router';
 import { TutorialDetailComponent } from './tutorial-detail/tutorial-detail.component';
-import { compareTutorials } from './models/Tutorial';
-import { compareSections } from './models/Section';
 import { TutorialsListComponent } from './tutorials-list/tutorials-list.component';
 import { TutorialEditComponent } from './tutorial-edit/tutorial-edit.component';
+
+import { TutorialsHttpService } from './services/tutorials-http.service';
+
+import { TutorialsResolver } from './tutorials.resolver';
 
 export const tutorialsRoutes: Routes = [
   {
       path: '',
       component: HomeComponent,
+      resolve: {
+        courses: TutorialsResolver
+      }
 
+  },
+  {
+    path: 'create',
+    component: TutorialCreateComponent
   },
   {
       path: ':tutorialID',
       component: TutorialDetailComponent,
+      resolve: {
+        courses: TutorialsResolver
+      }
 
   }
 ];
 
-// const entityMetadata: EntityMetadataMap = {
-//   Tutorial: {
-//       sortComparer: compareTutorials,
-//       entityDispatcherOptions: {
-//           optimisticUpdate: true
-//       }
-//   },
-//   Section: {
-//       sortComparer: compareSections
-//   }
-// };
-
 
 @NgModule({
   imports: [
-      CommonModule,
-      MatButtonModule,
-      MatIconModule,
-      MatCardModule,
-      MatTabsModule,
-      MatInputModule,
-      MatTableModule,
-      MatPaginatorModule,
-      MatSortModule,
-      MatProgressSpinnerModule,
-      MatSlideToggleModule,
-      MatDialogModule,
-      MatSelectModule,
-      MatDatepickerModule,
-      ReactiveFormsModule,
-      RouterModule.forChild(tutorialsRoutes)
+    CommonModule,
+    MatButtonModule,
+    MatIconModule,
+    MatCardModule,
+    MatTabsModule,
+    MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatProgressSpinnerModule,
+    MatSlideToggleModule,
+    MatDialogModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    ReactiveFormsModule,
+    RouterModule.forChild(tutorialsRoutes),
+    EffectsModule.forFeature([TutorialsEffects]),
+    StoreModule.forFeature("tutorials", tutorialsReducer)
   ],
   declarations: [
       HomeComponent,
       TutorialsListComponent,
       TutorialEditComponent,
-      TutorialDetailComponent
+      TutorialDetailComponent,
+      TutorialEditDialogComponent
   ],
   exports: [
       HomeComponent,
       TutorialsListComponent,
       TutorialEditComponent,
-      TutorialDetailComponent
+      TutorialDetailComponent,
+      TutorialEditDialogComponent
 
   ],
+  entryComponents: [TutorialEditDialogComponent],
   providers: [
-
+    TutorialsHttpService,
+    TutorialsResolver
   ]
 })
 export class TutorialsModule {
 
-
+  constructor() {}
 }
