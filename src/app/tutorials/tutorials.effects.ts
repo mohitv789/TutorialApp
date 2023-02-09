@@ -1,8 +1,9 @@
+import { SectionsActions, SectionsRequested, SectionActionTypes, SectionsLoaded } from './section.actions';
 import { allTutorialsLoaded } from './tutorials.actions';
 
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {concatMap, map} from 'rxjs/operators';
+import {concatMap, map, mergeMap} from 'rxjs/operators';
 import { TutorialActions } from './action-types';
 import { TutorialsHttpService } from './services/tutorials-http.service';
 
@@ -20,6 +21,18 @@ export class TutorialsEffects {
 
             )
     );
+
+
+    loadTutorialSections$ = createEffect(
+      () => this.actions$
+          .pipe(
+              ofType(SectionActionTypes.SectionsRequested),
+              mergeMap(({payload}) => (
+                this.tutorialsHttpService.findSections(payload["tutorialId"]))),
+              map(sections => new SectionsLoaded({sections}))
+          )
+  );
+
 
     editTutorial$ = createEffect(
         () => this.actions$

@@ -1,8 +1,11 @@
-import { MatDialog } from '@angular/material/dialog';
+import { Section } from './../models/Section';
+import { TutorialsHttpService } from './../services/tutorials-http.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Tutorial } from './../models/Tutorial';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { defaultDialogConfig } from '../shared/default-dialog-config';
 import { TutorialEditDialogComponent } from '../tutorial-edit-dialog/tutorial-edit-dialog.component';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-tutorials-list',
@@ -17,7 +20,8 @@ export class TutorialsListComponent implements OnInit{
   tutorialChanged = new EventEmitter();
 
   constructor(
-    private dialog: MatDialog,) {
+    private dialog: MatDialog,
+    private tutService: TutorialsHttpService) {
   }
 
   ngOnInit() {
@@ -25,18 +29,20 @@ export class TutorialsListComponent implements OnInit{
   }
 
   editTutorial(tutorial:Tutorial) {
-
-      const dialogConfig = defaultDialogConfig();
-
-      dialogConfig.data = {
-        dialogTitle:"Edit Tutorial",
-        tutorial,
-        mode: 'update'
-      };
-
-      this.dialog.open(TutorialEditDialogComponent, dialogConfig)
-        .afterClosed()
-        .subscribe(() => this.tutorialChanged.emit());
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.minWidth = "800px";
+    dialogConfig.data = {
+      tutorial:tutorial
+    };
+    this.dialog.open(TutorialEditDialogComponent, dialogConfig)
+      .afterClosed()
+      .subscribe(val => {
+        if (val) {
+            this.tutorialChanged.emit();
+        }
+    });
 
   }
 }

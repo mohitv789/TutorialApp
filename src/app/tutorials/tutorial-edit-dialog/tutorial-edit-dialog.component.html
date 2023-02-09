@@ -1,5 +1,5 @@
 
-<h2 mat-dialog-title>{{dialogTitle}}</h2>
+<h2 mat-dialog-title>Tutorial About</h2>
 
 <mat-dialog-content>
 
@@ -21,25 +21,21 @@
 
       </mat-form-field>
 
-      <ng-container *ngIf="mode == 'create'">
+      <mat-form-field>
 
-        <mat-form-field>
+        <input matInput
+                placeholder="Tutorial Field"
+                formControlName="field">
 
-          <input matInput
-                 placeholder="Tutorial Field"
-                 formControlName="field">
+      </mat-form-field>
 
-        </mat-form-field>
+      <mat-form-field>
 
-        <mat-form-field>
+        <input matInput
+                placeholder="Tutorial Icon Url"
+                formControlName="iconUrl">
 
-          <input matInput
-                 placeholder="Tutorial Icon Url"
-                 formControlName="iconUrl">
-
-        </mat-form-field>
-
-      </ng-container>
+      </mat-form-field>
 
       <mat-form-field>
 
@@ -51,6 +47,49 @@
       </mat-form-field>
 
     </ng-container>
+
+    <!-- <fieldset [formGroup]="sectionForm">
+      <div formArrayName="sections">
+        <div *ngFor="let value of sections;let i = index">
+          <ng-container [formGroupName]="i">
+
+            <mat-form-field>
+
+              <input matInput
+                     placeholder="Section description"
+                     formControlName="description">
+
+            </mat-form-field>
+
+            <mat-form-field>
+
+              <input matInput
+                     placeholder="Section Sequence"
+                     formControlName="seqNo">
+
+            </mat-form-field>
+
+            <mat-form-field>
+
+              <input matInput
+                     placeholder="Section Image"
+                     formControlName="image">
+
+            </mat-form-field>
+
+            <mat-form-field>
+
+              <textarea matInput placeholder="Solution"
+                        formControlName="solution">
+
+              </textarea>
+
+            </mat-form-field>
+
+          </ng-container>
+        </div>
+      </div>
+    </fieldset> -->
 
 
   </ng-container>
@@ -64,7 +103,7 @@
   </button>
 
   <button mat-raised-button color="primary"
-          [disabled]="!form.valid || (this.loading$ | async)">
+          [disabled]="!form.valid || (this.loading$ | async)" (click)="onSave()">
     Save
   </button>
 

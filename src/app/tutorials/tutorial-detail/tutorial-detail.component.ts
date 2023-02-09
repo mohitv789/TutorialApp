@@ -1,9 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { SectionsDataSource } from './../services/sections.datasource';
+import { selectSections } from './../sections.selector';
+import { selectTutorials, selectTutorialById } from './../tutorials.selectors';
+import { AppState } from './../../reducers/index';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Observable, concatMap, finalize, map, tap } from 'rxjs';
 import { Tutorial } from '../models/Tutorial';
 import { Section } from '../models/Section';
 import { ActivatedRoute, Params } from '@angular/router';
 import { TutorialsHttpService } from '../services/tutorials-http.service';
+import { Store, select } from '@ngrx/store';
 
 @Component({
   selector: 'app-tutorial-detail',
@@ -11,17 +16,19 @@ import { TutorialsHttpService } from '../services/tutorials-http.service';
   styleUrls: ['./tutorial-detail.component.css']
 })
 export class TutorialDetailComponent implements OnInit {
-  tutorial!: Tutorial;
+  tutorial$!: Observable<any>;
   id!: string;
-  sections!: Section[];
+  sections$!: Observable<Section[]>;
   loading = false;
+
+  dataSource!: SectionsDataSource;
   displayedColumns = ['seqNo', 'description', 'solution','image'];
 
   nextPage = 0;
 
   constructor(
-    private tutService: TutorialsHttpService,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private store: Store<AppState>) {
 
   }
 
@@ -32,28 +39,16 @@ export class TutorialDetailComponent implements OnInit {
           this.id = params['tutorialID'];
         }
       );
-      setTimeout(() => {
 
-        this.tutService.findTutorialById(this.id).subscribe(
-          (result) => {
+      this.tutorial$ = this.store.pipe(select(selectTutorialById(this.id)))
 
-            console.log(result);
-            if (result) {
-              this.tutorial = result;
+      this.dataSource = new SectionsDataSource(this.store);
 
-            }
-          }
-        )
-      }, 200)
-      setTimeout(() => {
-        this.tutService.findSections(this.id)
-        .pipe(
-            finalize(() => this.loading = false)
-        )
-        .subscribe(
-          sections => this.sections = sections
-        );
-      },500)
+      this.loadSectionsPage()
+  }
+  loadSectionsPage() {
+
+    this.dataSource.loadSections(this.id);
 
   }
 }

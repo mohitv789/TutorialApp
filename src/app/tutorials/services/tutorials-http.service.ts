@@ -81,7 +81,7 @@ export class TutorialsHttpService {
                     let tutId = res.id;
                     this.db.collection("tutorials").doc(tutId).set({id: tutId,...tutorial})
                     newSections.forEach((section)=> {
-                      this.db.collection(`tutorials/${tutId}/sections`).add(section)
+                      this.db.collection(`tutorials/${tutId}/sections`).add({...section,tutorialId:tutId})
                     })
                     return {
                       id: res.id,

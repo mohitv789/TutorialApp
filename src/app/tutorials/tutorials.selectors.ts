@@ -6,7 +6,10 @@ import * as fromTutorials from './reducers/tutorial.reducers';
 export const selectTutorialsState =
     createFeatureSelector<TutorialsState>("tutorials");
 
-
+export const selectTutorialById = (tutorialId:string) => createSelector(
+  selectTutorialsState,
+  TutorialsState => TutorialsState.entities[tutorialId]
+);
 
 export const selectAllTutorials = createSelector(
     selectTutorialsState,

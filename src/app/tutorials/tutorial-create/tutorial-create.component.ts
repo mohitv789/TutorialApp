@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { Store } from '@ngrx/store';
 import { tutorialSaved } from '../tutorials.actions';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tutorial-create',
@@ -17,7 +18,7 @@ import { tutorialSaved } from '../tutorials.actions';
 })
 export class TutorialCreateComponent implements OnInit{
 
-  constructor(private store: Store<AppState>) {}
+  constructor(private store: Store<AppState>,private router: Router) {}
 
   ngOnInit(): void {
 
@@ -37,6 +38,7 @@ export class TutorialCreateComponent implements OnInit{
     })
     this.store.dispatch(tutorialSaved({tutorial,sections}));
     localStorage.removeItem('STEP_1');
+    this.router.navigateByUrl("/tutorials")
 
   }
 }

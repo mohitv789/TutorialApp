@@ -1,3 +1,6 @@
+import { sectionsReducer } from './reducers/sections.reducers';
+import { TutorialCreatePartAComponent } from './tutorial-create/tutorial-create-part-a/tutorial-create-part-a.component';
+import { TutorialCreatePartBComponent } from './tutorial-create/tutorial-create-part-b/tutorial-create-part-b.component';
 import { TutorialCreateComponent } from './tutorial-create/tutorial-create.component';
 import { TutorialEditDialogComponent } from './tutorial-edit-dialog/tutorial-edit-dialog.component';
 import { tutorialsReducer } from './reducers/tutorial.reducers';
@@ -29,13 +32,15 @@ import { TutorialEditComponent } from './tutorial-edit/tutorial-edit.component';
 import { TutorialsHttpService } from './services/tutorials-http.service';
 
 import { TutorialsResolver } from './tutorials.resolver';
+import { SectionsResolver } from './sections.resolver';
+import { MatStepperModule } from '@angular/material/stepper';
 
 export const tutorialsRoutes: Routes = [
   {
       path: '',
       component: HomeComponent,
       resolve: {
-        courses: TutorialsResolver
+        tutorials: TutorialsResolver
       }
 
   },
@@ -46,9 +51,6 @@ export const tutorialsRoutes: Routes = [
   {
       path: ':tutorialID',
       component: TutorialDetailComponent,
-      resolve: {
-        courses: TutorialsResolver
-      }
 
   }
 ];
@@ -69,31 +71,42 @@ export const tutorialsRoutes: Routes = [
     MatSlideToggleModule,
     MatDialogModule,
     MatSelectModule,
+
+    MatStepperModule,
     MatDatepickerModule,
     ReactiveFormsModule,
     RouterModule.forChild(tutorialsRoutes),
     EffectsModule.forFeature([TutorialsEffects]),
-    StoreModule.forFeature("tutorials", tutorialsReducer)
+    StoreModule.forFeature("tutorials", tutorialsReducer),
+    StoreModule.forFeature("sections", sectionsReducer)
   ],
   declarations: [
       HomeComponent,
       TutorialsListComponent,
       TutorialEditComponent,
       TutorialDetailComponent,
-      TutorialEditDialogComponent
+      TutorialEditDialogComponent,
+      TutorialCreateComponent,
+      TutorialCreatePartAComponent,
+      TutorialCreatePartBComponent
   ],
   exports: [
       HomeComponent,
       TutorialsListComponent,
       TutorialEditComponent,
       TutorialDetailComponent,
-      TutorialEditDialogComponent
+      TutorialEditDialogComponent,
+      TutorialCreateComponent,
+      TutorialCreatePartAComponent,
+      TutorialCreatePartBComponent
+
 
   ],
   entryComponents: [TutorialEditDialogComponent],
   providers: [
     TutorialsHttpService,
-    TutorialsResolver
+    TutorialsResolver,
+    SectionsResolver
   ]
 })
 export class TutorialsModule {

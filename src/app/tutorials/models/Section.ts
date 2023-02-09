@@ -4,7 +4,7 @@ export interface Section {
     id: string;
     description: string;
     seqNo: number;
-    tutorialId: number;
+    tutorialId: string;
     solution: string;
     image?: string;
 }
@@ -12,7 +12,7 @@ export interface Section {
 
 export function compareSections(s1:Section, s2: Section) {
 
-  const compareSections = s1.tutorialId - s2.tutorialId;
+  const compareSections = s1.seqNo - s2.seqNo;
 
   if (compareSections > 0) {
     return 1;

@@ -1,4 +1,3 @@
-import { TutorialCreatePartBComponent } from './tutorials/tutorial-create/tutorial-create-part-b/tutorial-create-part-b.component';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -23,11 +22,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth/auth.guard';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import {AngularFireFunctionsModule} from '@angular/fire/compat/functions';
-import {metaReducers, reducers} from './reducers';
+import { reducers} from './reducers';
 import { EntityDataModule } from '@ngrx/data';
 import { RouterState,StoreRouterConnectingModule } from '@ngrx/router-store';
-import { TutorialCreateComponent } from './tutorials/tutorial-create/tutorial-create.component';
-import { TutorialCreatePartAComponent } from './tutorials/tutorial-create/tutorial-create-part-a/tutorial-create-part-a.component';
 
 
 import {MatStepperModule} from '@angular/material/stepper';
@@ -49,9 +46,6 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    TutorialCreateComponent,
-    TutorialCreatePartAComponent,
-    TutorialCreatePartBComponent
   ],
   imports: [
     BrowserModule,
@@ -71,7 +65,6 @@ const routes: Routes = [
     ReactiveFormsModule,
     AuthModule.forRoot(),
     StoreModule.forRoot(reducers, {
-      metaReducers,
       runtimeChecks : {
           strictStateImmutability: true,
           strictActionImmutability: true,

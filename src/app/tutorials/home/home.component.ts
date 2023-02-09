@@ -1,4 +1,5 @@
-import { selectAllTutorials } from './../tutorials.selectors';
+import { selectSections } from './../sections.selector';
+import { selectAllTutorials, areTutorialsLoaded } from './../tutorials.selectors';
 import { AppState } from './../../reducers/index';
 import { Store, select } from '@ngrx/store';
 import { TutorialEditDialogComponent } from './../tutorial-edit-dialog/tutorial-edit-dialog.component';
@@ -28,7 +29,7 @@ export class HomeComponent implements OnInit{
   }
 
   ngOnInit() {
-    this.reload();
+
   }
 
   reload() {
