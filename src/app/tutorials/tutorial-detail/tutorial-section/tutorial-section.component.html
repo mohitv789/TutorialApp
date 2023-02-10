@@ -1,0 +1,28 @@
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <h2>Section {{ section.seqNo }} of {{ section.tutorialId }}</h2>
+      </div>
+      <div class="col-md-4">
+        <button mat-mini-fab color="accent" *ngIf="!!canShow" (click)="editSection(section)">
+          <mat-icon class="add-course-btn" >edit</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="row" style="margin: 20px 0;">
+
+      </div>
+      <img
+        [src]="section.image"
+        alt="{{ section.image }}"
+        class="img-fluid"
+        style="max-width: 200px"
+      />
+      <p>Description : {{ section.description }}</p>
+
+      <p>Solution : {{ section.solution }}</p>
+    </div>
+
+  </div>

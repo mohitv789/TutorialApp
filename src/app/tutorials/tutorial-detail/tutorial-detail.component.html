@@ -1,60 +1,30 @@
 <div class="course" *ngIf="(tutorial$ | async) as tutorial">
 
   <h2>{{tutorial.description}}</h2>
-
+  <button mat-mini-fab color="accent" *ngIf="!!(tutorial.owner.toString() == user_id.toString())" (click)="editTutorial(tutorial)">
+    <mat-icon class="add-course-btn" >edit</mat-icon>
+  </button>
   <img [src]="tutorial.iconUrl" class="course-thumbnail mat-elevation-z8">
-
+  <p>{{tutorial.longDescription}}</p>
   <div class="spinner-container" *ngIf="loading">
 
       <mat-spinner></mat-spinner>
 
   </div>
-  <div>
-    <mat-table class="lessons-table mat-elevation-z8"
-          [dataSource]="dataSource">
 
-
-
-      <ng-container matColumnDef="image" style="max-width: 50px;">
-
-        <mat-header-cell *matHeaderCellDef>Image</mat-header-cell>
-
-        <mat-cell class="duration-cell"
-                  *matCellDef="let section"><img [src]="section.image" style="max-width: 50px;"/></mat-cell>
-
-      </ng-container>
-
-      <ng-container matColumnDef="seqNo">
-
-          <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
-
-          <mat-cell *matCellDef="let section">{{section.seqNo}}</mat-cell>
-
-      </ng-container>
-
-      <ng-container matColumnDef="description">
-
-          <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
-
-          <mat-cell class="description-cell"
-                    *matCellDef="let section">{{section.description}}</mat-cell>
-
-      </ng-container>
-
-      <ng-container matColumnDef="solution">
-
-          <mat-header-cell *matHeaderCellDef>Solution</mat-header-cell>
-
-          <mat-cell class="duration-cell"
-                    *matCellDef="let section">{{section.solution}}</mat-cell>
-
-      </ng-container>
-
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-
-      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-
-  </mat-table>
+  <div class="section-container" *ngIf="(sections$ | async) as sections">
+    <mat-tab-group dynamicHeight>
+      <mat-tab
+        class="mat-tab"
+        *ngFor="let sectionEl of sections; let index = index"
+        label="Section {{ index + 1 }}"
+      >
+        <app-tutorial-section
+          [section]="sectionEl"
+          [canShow]="!!canshow"
+        ></app-tutorial-section>
+      </mat-tab>
+    </mat-tab-group>
   </div>
 
 

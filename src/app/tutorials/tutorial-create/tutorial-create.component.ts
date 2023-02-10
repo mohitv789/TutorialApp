@@ -38,7 +38,10 @@ export class TutorialCreateComponent implements OnInit{
     })
     this.store.dispatch(tutorialSaved({tutorial,sections}));
     localStorage.removeItem('STEP_1');
-    this.router.navigateByUrl("/tutorials")
+    setTimeout(() => {
+      this.router.navigateByUrl("/tutorials");
+    },250)
+
 
   }
 }

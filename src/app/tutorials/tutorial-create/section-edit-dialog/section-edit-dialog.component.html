@@ -1,11 +1,11 @@
 
-<h2 mat-dialog-title>{{section.description}}</h2>
+<h2 mat-dialog-title>New Section</h2>
 
 <mat-dialog-content>
 
-  <ng-container *ngIf="form">
+  <ng-container *ngIf="sectionForm">
 
-    <ng-container [formGroup]="form">
+    <ng-container [formGroup]="sectionForm">
 
       <mat-form-field>
 
@@ -52,12 +52,12 @@
 <mat-dialog-actions>
 
   <button mat-raised-button (click)="onClose()">
-    Cancel Edit
+    Cancel
   </button>
 
   <button mat-raised-button color="primary"
-          [disabled]="!form.valid" (click)="onSave()">
-    Edit Section
+          [disabled]="!sectionForm.valid" (click)="onSave()">
+    Add Section
   </button>
 
 </mat-dialog-actions>

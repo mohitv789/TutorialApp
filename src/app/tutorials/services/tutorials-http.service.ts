@@ -51,8 +51,12 @@ export class TutorialsHttpService {
         )
     }
 
-    saveTutorial(tutorialId: string | number, changes: Partial<Tutorial>) {
+    updateTutorial(tutorialId: string | number, changes: Partial<Tutorial>) {
       return from(this.db.doc(`tutorials/${tutorialId}`).update(changes));
+    }
+
+    updateSection(tutorialId: string,sectionId: string, changes: Partial<Section>[]) {
+      return from(this.db.doc(`tutorials/${tutorialId}/sections/${sectionId}`).update(changes));
     }
   //   deleteTutorial(tutorialId:string) {
   //     return from(this.db.doc(`tutorials/${tutorialId}`).delete());
@@ -64,25 +68,28 @@ export class TutorialsHttpService {
           .get()
           .pipe(
               concatMap(result => {
-                  let tutorialId: string;
+                  const loggedInUser = JSON.parse(localStorage.getItem("user")!).uid;
                   const tutorials = convertSnaps<Tutorial>(result);
 
                   const lastTutorialSeqNo = tutorials[0]?.seqNo ?? 0;
 
                   const tutorial = {
                       ...newTutorial,
+                      owner:loggedInUser,
                       seqNo: lastTutorialSeqNo + 1
                   }
 
-                  let save$: Observable<any>;
 
                   this.store.dispatch(loadAllTutorials());
                   return this.db.collection("tutorials").add(tutorial).then((res) => {
+
                     let tutId = res.id;
-                    this.db.collection("tutorials").doc(tutId).set({id: tutId,...tutorial})
-                    newSections.forEach((section)=> {
-                      this.db.collection(`tutorials/${tutId}/sections`).add({...section,tutorialId:tutId})
+                    this.db.collection("tutorials").doc(tutId).set({id: tutId,...tutorial});
+
+                    newSections.forEach((section: any)=> {
+                      return this.createSection(tutId, section);
                     })
+
                     return {
                       id: res.id,
                       ...tutorial
@@ -91,4 +98,13 @@ export class TutorialsHttpService {
 
           })
         )}
+
+  createSection(tutorialId: string,newSection: Partial<Section>) {
+    return this.db.collection(`tutorials/${tutorialId}/sections`).add({...newSection}).then(
+            (resp) => {
+              let sectionId = resp.id;
+              return this.db.collection(`tutorials/${tutorialId}/sections`).doc(sectionId).set({id: sectionId,...newSection,tutorialId:tutorialId});
+            }
+          )
+    }
 }

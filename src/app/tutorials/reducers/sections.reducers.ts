@@ -10,11 +10,12 @@ export interface  SectionState extends EntityState<Section> {
   loading: boolean
 }
 export const adapterS = createEntityAdapter<Section>({
-  sortComparer: compareSections
+  sortComparer: compareSections,
+  selectId: Section => Section.id
 });
 
 export const initialSectionState = adapterS.getInitialState({
-  loading:false,
+  loading:false
 });
 
 export function sectionsReducer( state = initialSectionState, action: SectionsActions ): SectionState {
@@ -30,6 +31,9 @@ export function sectionsReducer( state = initialSectionState, action: SectionsAc
     case SectionActionTypes.SectionsLoaded:
 
       return adapterS.addMany(action.payload.sections, {...state, loading:false});
+
+    case SectionActionTypes.SectionsUpdated:
+      return adapterS.updateOne(action.payload.section, {...state, loading:false});
 
 
     default:

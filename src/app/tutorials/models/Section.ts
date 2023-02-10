@@ -1,5 +1,3 @@
-
-
 export interface Section {
     id: string;
     description: string;
@@ -8,7 +6,6 @@ export interface Section {
     solution: string;
     image?: string;
 }
-
 
 export function compareSections(s1:Section, s2: Section) {
 

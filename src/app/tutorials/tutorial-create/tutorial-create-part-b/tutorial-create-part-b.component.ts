@@ -1,3 +1,5 @@
+import { SectionEditDialogComponent } from '../section-edit-dialog/section-edit-dialog.component';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
 
@@ -12,7 +14,8 @@ export class TutorialCreatePartBComponent {
   });
 
 
-constructor(private fb:FormBuilder) {
+constructor(private fb:FormBuilder,
+  private dialog: MatDialog) {
 
 }
 
@@ -21,14 +24,21 @@ get sections() {
 }
 
 addSection() {
-  const sectionForm = this.fb.group({
-    description: ['', Validators.required],
-    seqNo: ['', Validators.required],
-    solution: ['', Validators.required],
-    image: ['', Validators.required],
-  });
 
-  this.sections.push(sectionForm);
+  const dialogConfig = new MatDialogConfig();
+  dialogConfig.autoFocus = true;
+  dialogConfig.minWidth = "800px";
+  dialogConfig.disableClose = true;
+
+  this.dialog.open(SectionEditDialogComponent, dialogConfig)
+    .afterClosed()
+    .subscribe(val => {
+      if (val) {
+        console.log(val.data);
+
+        this.sections.push(val.data);
+      }
+  });
 }
 
   deleteSection(sectionIndex: number) {

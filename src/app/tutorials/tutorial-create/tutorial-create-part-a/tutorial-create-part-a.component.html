@@ -2,7 +2,7 @@
 
   <mat-form-field>
 
-      <input matInput placeholder="Tutorial title" formControlName="description" #description>
+      <input matInput placeholder="Title" formControlName="description" #description>
 
       <mat-hint align="end">
           {{ description.value.length }} / 60
@@ -12,7 +12,9 @@
 
   <mat-form-field appearance="outline">
 
-      <textarea matInput placeholder="Tutorial Description" formControlName="longDescription">
+      <textarea matInput placeholder="Description" formControlName="longDescription" cdkTextareaAutosize
+        cdkAutosizeMinRows="5"
+        cdkAutosizeMaxRows="8">
 
       </textarea>
 
@@ -20,14 +22,15 @@
 
   <mat-form-field>
 
-    <input matInput placeholder="Tutorial Field" formControlName="field" #field>
+    <input matInput placeholder="Scope" formControlName="field" #field>
 
   </mat-form-field>
 
   <mat-form-field>
 
-    <input matInput placeholder="Tutorial Icon" formControlName="iconUrl" #iconUrl>
+    <input matInput placeholder="Icon" formControlName="iconUrl" #iconUrl>
 
   </mat-form-field>
 
 </div>
+

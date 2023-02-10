@@ -11,7 +11,7 @@
   <img mat-card-image [src]="tutorial.iconUrl" style="max-width: 400px;justify-content: center;">
 
   <mat-card-content>
-      <p>{{tutorial.longDescription}}</p>
+      <p>{{tutorial.longDescription?.slice(0,100)}}</p>
   </mat-card-content>
 
   <mat-card-actions class="course-actions">
@@ -19,10 +19,6 @@
       <button mat-raised-button color="primary" [routerLink]="['/tutorials', tutorial.id]">
           VIEW
       </button>
-
-    <button mat-mini-fab color="accent" (click)="editTutorial(tutorial)">
-      <mat-icon class="add-course-btn" >edit</mat-icon>
-    </button>
 
   </mat-card-actions>
 

@@ -5,12 +5,6 @@
 
   <ng-container *ngIf="form">
 
-    <div class="spinner-container" *ngIf="loading$ | async">
-
-      <mat-spinner></mat-spinner>
-
-    </div>
-
     <ng-container [formGroup]="form">
 
       <mat-form-field>
@@ -47,50 +41,6 @@
       </mat-form-field>
 
     </ng-container>
-
-    <!-- <fieldset [formGroup]="sectionForm">
-      <div formArrayName="sections">
-        <div *ngFor="let value of sections;let i = index">
-          <ng-container [formGroupName]="i">
-
-            <mat-form-field>
-
-              <input matInput
-                     placeholder="Section description"
-                     formControlName="description">
-
-            </mat-form-field>
-
-            <mat-form-field>
-
-              <input matInput
-                     placeholder="Section Sequence"
-                     formControlName="seqNo">
-
-            </mat-form-field>
-
-            <mat-form-field>
-
-              <input matInput
-                     placeholder="Section Image"
-                     formControlName="image">
-
-            </mat-form-field>
-
-            <mat-form-field>
-
-              <textarea matInput placeholder="Solution"
-                        formControlName="solution">
-
-              </textarea>
-
-            </mat-form-field>
-
-          </ng-container>
-        </div>
-      </div>
-    </fieldset> -->
-
 
   </ng-container>
 

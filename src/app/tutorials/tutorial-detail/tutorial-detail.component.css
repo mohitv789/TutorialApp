@@ -12,30 +12,10 @@
   display: block;
 }
 
-.description-cell {
-  text-align: left;
-  margin: 10px auto;
-}
-
-.duration-cell {
-  text-align: center;
-}
-
-.duration-cell mat-icon {
-  display: inline-block;
-  vertical-align: middle;
-  font-size: 20px;
-}
-
 .spinner-container {
   height: 360px;
   width: 390px;
   position: fixed;
-}
-
-.lessons-table {
-  min-height: 360px;
-  margin-top: 10px;
 }
 
 .spinner-container mat-spinner {
@@ -45,4 +25,8 @@
 .bottom-toolbar {
 margin: 30px 0;
 font-size: 18px;
+}
+.section-container {
+  margin-top: 50px;
+  margin-bottom: 50px;
 }

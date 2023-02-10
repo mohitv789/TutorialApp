@@ -6,6 +6,7 @@ export interface Tutorial {
   description: string;
   longDescription?: string;
   field: string;
+  owner: string;
 }
 
 

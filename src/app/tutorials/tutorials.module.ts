@@ -1,3 +1,4 @@
+import { SectionEditDialogComponent } from './tutorial-create/section-edit-dialog/section-edit-dialog.component';
 import { sectionsReducer } from './reducers/sections.reducers';
 import { TutorialCreatePartAComponent } from './tutorial-create/tutorial-create-part-a/tutorial-create-part-a.component';
 import { TutorialCreatePartBComponent } from './tutorial-create/tutorial-create-part-b/tutorial-create-part-b.component';
@@ -32,8 +33,8 @@ import { TutorialEditComponent } from './tutorial-edit/tutorial-edit.component';
 import { TutorialsHttpService } from './services/tutorials-http.service';
 
 import { TutorialsResolver } from './tutorials.resolver';
-import { SectionsResolver } from './sections.resolver';
 import { MatStepperModule } from '@angular/material/stepper';
+import { TutorialSectionComponent } from './tutorial-detail/tutorial-section/tutorial-section.component';
 
 export const tutorialsRoutes: Routes = [
   {
@@ -51,8 +52,7 @@ export const tutorialsRoutes: Routes = [
   {
       path: ':tutorialID',
       component: TutorialDetailComponent,
-
-  }
+  },
 ];
 
 
@@ -88,7 +88,9 @@ export const tutorialsRoutes: Routes = [
       TutorialEditDialogComponent,
       TutorialCreateComponent,
       TutorialCreatePartAComponent,
-      TutorialCreatePartBComponent
+      TutorialCreatePartBComponent,
+      TutorialSectionComponent,
+      SectionEditDialogComponent
   ],
   exports: [
       HomeComponent,
@@ -98,15 +100,18 @@ export const tutorialsRoutes: Routes = [
       TutorialEditDialogComponent,
       TutorialCreateComponent,
       TutorialCreatePartAComponent,
-      TutorialCreatePartBComponent
+      TutorialCreatePartBComponent,
+      TutorialSectionComponent
 
 
   ],
-  entryComponents: [TutorialEditDialogComponent],
+  entryComponents: [
+    TutorialEditDialogComponent,
+    TutorialEditComponent
+  ],
   providers: [
     TutorialsHttpService,
-    TutorialsResolver,
-    SectionsResolver
+    TutorialsResolver
   ]
 })
 export class TutorialsModule {

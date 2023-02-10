@@ -38,13 +38,23 @@ export class TutorialsEffects {
         () => this.actions$
             .pipe(
                 ofType(TutorialActions.tutorialUpdated),
-                concatMap(action => this.tutorialsHttpService.saveTutorial(
+                concatMap(action => this.tutorialsHttpService.updateTutorial(
                     action.update.id,
                     action.update.changes
                 ))
             ),
         {dispatch: false}
     );
+
+    editSections$ = createEffect(
+      () => this.actions$
+          .pipe(
+              ofType(SectionActionTypes.SectionsUpdated),
+              concatMap(({payload}) => (
+                this.tutorialsHttpService.updateSection(payload["tutorialId"],payload["sectionId"],payload["section"])))
+          ),
+      {dispatch: false}
+  );
 
     createTutorial$ = createEffect(
       () => this.actions$

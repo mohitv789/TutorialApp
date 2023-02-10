@@ -1,11 +1,12 @@
 import {Action} from '@ngrx/store';
 import {Section} from './models/Section';
-
+import {Update} from '@ngrx/entity';
 
 export enum SectionActionTypes {
 
-  SectionsRequested = '[Course Landing Page] Lessons Requested',
-  SectionsLoaded = '[Courses API] Lessons Loaded',
+  SectionsRequested = '[Tutorial Landing Page] Sections Requested',
+  SectionsLoaded = '[Tutorial API] Sections Loaded',
+  SectionsUpdated = "[Tutorial Edit Section] Section Updated",
 }
 
 
@@ -25,9 +26,16 @@ export class SectionsLoaded implements Action {
 
 }
 
+export class SectionsUpdated implements Action {
 
+  readonly type = SectionActionTypes.SectionsUpdated;
+
+  constructor(public payload:{section: Update<Section>,tutorialId: string,sectionId:string}) {}
+
+}
 
 
 export type SectionsActions =
   | SectionsRequested
   | SectionsLoaded
+  | SectionsUpdated
