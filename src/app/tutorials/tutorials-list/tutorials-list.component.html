@@ -10,10 +10,12 @@
 
   <img mat-card-image [src]="tutorial.iconUrl" style="max-width: 400px;justify-content: center;">
 
-  <mat-card-content>
+  <mat-card-content style="text-align: center;">
       <p>{{tutorial.longDescription?.slice(0,100)}}</p>
   </mat-card-content>
-
+  <mat-card-footer style="text-align: center; background-color: darkgrey ; padding:auto 20px;margin: 20px 0;">
+    <p><strong>Author : </strong>{{tutorial.owner}}</p>
+  </mat-card-footer>
   <mat-card-actions class="course-actions">
 
       <button mat-raised-button color="primary" [routerLink]="['/tutorials', tutorial.id]">

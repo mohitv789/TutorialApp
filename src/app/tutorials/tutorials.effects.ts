@@ -1,4 +1,4 @@
-import { SectionsActions, SectionsRequested, SectionActionTypes, SectionsLoaded } from './section.actions';
+import { SectionsLoaded, SectionUpdated, SectionsRequested } from './section.actions';
 import { allTutorialsLoaded } from './tutorials.actions';
 
 import {Injectable} from '@angular/core';
@@ -26,10 +26,10 @@ export class TutorialsEffects {
     loadTutorialSections$ = createEffect(
       () => this.actions$
           .pipe(
-              ofType(SectionActionTypes.SectionsRequested),
-              mergeMap(({payload}) => (
-                this.tutorialsHttpService.findSections(payload["tutorialId"]))),
-              map(sections => new SectionsLoaded({sections}))
+              ofType(SectionsRequested),
+              concatMap(action=> (
+                this.tutorialsHttpService.findSections(action.tutorialId))),
+              map(sections => SectionsLoaded({sections}))
           )
   );
 
@@ -49,9 +49,9 @@ export class TutorialsEffects {
     editSections$ = createEffect(
       () => this.actions$
           .pipe(
-              ofType(SectionActionTypes.SectionsUpdated),
-              concatMap(({payload}) => (
-                this.tutorialsHttpService.updateSection(payload["tutorialId"],payload["sectionId"],payload["section"])))
+              ofType(SectionUpdated),
+              concatMap( action => (
+                this.tutorialsHttpService.updateSection(action.update.changes)))
           ),
       {dispatch: false}
   );

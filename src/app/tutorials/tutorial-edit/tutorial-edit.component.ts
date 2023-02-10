@@ -1,4 +1,3 @@
-import { SectionsUpdated } from './../section.actions';
 import { Section } from './../models/Section';
 import { AppState } from './../../reducers/index';
 import { Component, Inject, OnInit } from '@angular/core';
@@ -7,6 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Update } from '@ngrx/entity';
+import { SectionUpdated } from '../section.actions';
 @Component({
   selector: 'app-tutorial-edit',
   templateUrl: './tutorial-edit.component.html',
@@ -15,7 +15,6 @@ import { Update } from '@ngrx/entity';
 export class TutorialEditComponent implements OnInit{
   form!: UntypedFormGroup;
   section!: Section;
-  loading$!: Observable<boolean>;
   tutorialId!: string;
   constructor(
       private fb: UntypedFormBuilder,
@@ -53,11 +52,7 @@ export class TutorialEditComponent implements OnInit{
       changes: section
     };
 
-    this.store.dispatch(new SectionsUpdated({
-      tutorialId: this.tutorialId,
-      sectionId: this.section.id,
-      section: update
-    }));
+    this.store.dispatch(SectionUpdated({update}));
 
     this.dialogRef.close();
 

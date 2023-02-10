@@ -40,15 +40,5 @@ export class HomeComponent implements OnInit{
 
   onAddTutorial() {
     this.router.navigate(['create'], {relativeTo: this.route});
-    // const dialogConfig = defaultDialogConfig();
-    // console.log("Clicked");
-
-    // dialogConfig.data = {
-    //   dialogTitle:"Create Tutorial",
-    //   mode: 'create'
-    // };
-
-    // this.dialog.open(TutorialEditDialogComponent, dialogConfig);
-
   }
 }

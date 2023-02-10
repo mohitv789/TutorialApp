@@ -75,7 +75,7 @@ export class TutorialDetailComponent implements OnInit {
                 this.sectionsSubject.next(sections);
               }
               else {
-                this.store.dispatch(new SectionsRequested({tutorialId: this.id}));
+                this.store.dispatch(SectionsRequested({tutorialId : this.id}));
               }
             }),
             catchError(() => of([]))

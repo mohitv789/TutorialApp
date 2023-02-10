@@ -5,7 +5,7 @@ import firebase from 'firebase/compat/app';
 import OrderByDirection = firebase.firestore.OrderByDirection;
 import {Injectable} from "@angular/core";
 import {HttpParams} from "@angular/common/http";
-import {Observable, from} from "rxjs";
+import {Observable, from, of} from "rxjs";
 import {concatMap, map} from "rxjs/operators";
 import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { convertSnaps } from './db-utils';
@@ -51,12 +51,17 @@ export class TutorialsHttpService {
         )
     }
 
-    updateTutorial(tutorialId: string | number, changes: Partial<Tutorial>) {
-      return from(this.db.doc(`tutorials/${tutorialId}`).update(changes));
+    updateTutorial(tutorialId: string | number, changes: Partial<Tutorial>):Observable<any> {
+      return from(this.db.doc(`tutorials/${tutorialId}`).update({...changes}));
     }
 
-    updateSection(tutorialId: string,sectionId: string, changes: Partial<Section>[]) {
-      return from(this.db.doc(`tutorials/${tutorialId}/sections/${sectionId}`).update(changes));
+    updateSection(updatedSection: Partial<Section>):Observable<any> {
+      let sectionId = {...updatedSection}.id;
+      let tutorialId = {...updatedSection}.tutorialId
+
+      return from(this.db.doc(`tutorials/${tutorialId}/sections/${sectionId}`).update({...updatedSection}));
+
+
     }
   //   deleteTutorial(tutorialId:string) {
   //     return from(this.db.doc(`tutorials/${tutorialId}`).delete());

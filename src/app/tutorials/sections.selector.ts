@@ -19,8 +19,3 @@ export const selectSections = (tutorialId:string) => createSelector(
     return sections.filter(section => section.tutorialId == tutorialId)
   }
 );
-
-export const selectSectionsLoading = createSelector(
-  selectSectionsState,
-  SectionState => SectionState.loading
-);

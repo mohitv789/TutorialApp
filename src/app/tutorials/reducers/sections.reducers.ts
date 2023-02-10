@@ -1,13 +1,10 @@
-import { SectionsActions, SectionActionTypes, SectionsLoaded } from './../section.actions';
-
-import { AppState } from './../../reducers/index';
 import {createEntityAdapter, EntityState} from '@ngrx/entity';
 import {createReducer, on} from '@ngrx/store';
 import { compareSections, Section } from '../models/Section';
-import {TutorialActions} from '../action-types';
+import { SectionActions } from '../section-action-types';
 
 export interface  SectionState extends EntityState<Section> {
-  loading: boolean
+
 }
 export const adapterS = createEntityAdapter<Section>({
   sortComparer: compareSections,
@@ -15,37 +12,23 @@ export const adapterS = createEntityAdapter<Section>({
 });
 
 export const initialSectionState = adapterS.getInitialState({
-  loading:false
+
 });
 
-export function sectionsReducer( state = initialSectionState, action: SectionsActions ): SectionState {
-  switch(action.type) {
+export const sectionsReducer = createReducer(
 
+  initialSectionState,
 
-    case SectionActionTypes.SectionsRequested:
-      return {
-        ...state,
-        loading:true
-      };
+    on(SectionActions.SectionsLoaded,
+        (state, action) => adapterS.addMany(
+            action.sections,
+            {
+              ...state
+            })),
+    on(SectionActions.SectionUpdated, (state, action) =>
+        adapterS.updateOne(action.update, state) )
 
-    case SectionActionTypes.SectionsLoaded:
-
-      return adapterS.addMany(action.payload.sections, {...state, loading:false});
-
-    case SectionActionTypes.SectionsUpdated:
-      return adapterS.updateOne(action.payload.section, {...state, loading:false});
-
-
-    default:
-
-      return state;
-
-  }
-}
+);
 export const {
-  selectAll,
-  selectEntities,
-  selectIds,
-  selectTotal
-
+  selectAll
 } = adapterS.getSelectors();
