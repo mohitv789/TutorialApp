@@ -9,3 +9,22 @@ textarea {
   height: 100px;
   resize: vertical;
 }
+.section-thumbnail {
+  max-width: 300px;
+  border-radius: 4px;
+  margin: 20px auto;
+  display: block;
+}
+
+.section-image-upload {
+  margin: 0 0 20px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.section-image-upload span {
+  margin-bottom:10px;
+}
+.container {
+  padding: 25px;
+}

@@ -1,6 +1,9 @@
+import { concatMap } from 'rxjs/operators';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { filter } from 'rxjs';
+import { filter, last, Observable, tap, catchError, throwError } from 'rxjs';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Component({
   selector: 'app-tutorial-create-part-a',
@@ -8,13 +11,11 @@ import { filter } from 'rxjs';
   styleUrls: ['./tutorial-create-part-a.component.css']
 })
 export class TutorialCreatePartAComponent {
-
+  canshow: boolean = false;
+  iconUrl!: string;
+  // percentageChanges$: Observable<number>;
+  tutorialId!: string;
   form = this.fb.group({
-    iconUrl: ['', {
-      validators: [
-          Validators.required,
-      ],
-    }],
     description: ['', {
         validators: [
             Validators.required,
@@ -36,12 +37,14 @@ export class TutorialCreatePartAComponent {
   }],
 });
 
-constructor(private fb: FormBuilder) {
+constructor(private fb: FormBuilder,
+  private afs : AngularFirestore, private storage: AngularFireStorage) {
 
 }
 
 ngOnInit() {
 
+    this.tutorialId = this.afs.createId();
     const draft = localStorage.getItem("STEP_1");
 
     if (draft) {
@@ -55,4 +58,43 @@ ngOnInit() {
         .subscribe( val => localStorage.setItem("STEP_1", JSON.stringify(val)));
 
   }
+  selectedFile: any = null;
+
+  onFileSelected(event: any): void {
+      this.selectedFile = event.target.files[0] ?? null;
+
+  }
+
+  uploadFile(event: any) {
+
+    const file: File = event.target.files[0];
+
+
+    const filePath = `tutorials/${this.tutorialId}/${file.name}`;
+    const task = this.storage.upload(filePath, file, {
+      cacheControl: "max-age=2592000,public"
+    });
+
+    // this.percentageChanges$ = task.percentageChanges();
+
+    task.snapshotChanges()
+            .pipe(
+                last(),
+                concatMap(() => this.storage.ref(filePath).getDownloadURL()),
+                tap(url => {
+                  localStorage.setItem("STEP_1_FILE", JSON.stringify(url));
+                  localStorage.setItem("STEP_1_ID", JSON.stringify(this.tutorialId));
+                  this.iconUrl = url;
+                  this.canshow = true;
+                }),
+                catchError(err => {
+                    console.log(err);
+                    alert("Could not create thumbnail url.");
+                    return throwError(err);
+                })
+
+            )
+            .subscribe();
+  }
+
 }

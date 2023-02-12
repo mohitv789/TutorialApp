@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AppState } from './reducers';
 import { Store, select } from '@ngrx/store';
 import { login, logout } from './auth/auth.actions';
 import { isLoggedIn, isLoggedOut } from './auth/auth.selectors';
+import { UserService } from './auth/user.service';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,6 @@ import { isLoggedIn, isLoggedOut } from './auth/auth.selectors';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
-
   loading = true;
 
   isLoggedIn$!: Observable<boolean>;
@@ -20,7 +20,8 @@ export class AppComponent implements OnInit{
   isLoggedOut$!: Observable<boolean>;
 
   constructor(private router: Router,
-              private store: Store<AppState>) {
+              private store: Store<AppState>,
+              public user: UserService) {
 
   }
 
@@ -60,6 +61,7 @@ export class AppComponent implements OnInit{
           .pipe(
               select(isLoggedOut)
           );
+
 
   }
 

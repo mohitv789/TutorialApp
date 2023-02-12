@@ -1,24 +1,17 @@
-mat-form-field {
-  display: block;
-}
-
-textarea {
-  max-height: 400px;
-}
-.tutorial-thumbnail {
+.profile-thumbnail {
   max-width: 300px;
   border-radius: 4px;
   margin: 20px auto;
   display: block;
 }
 
-.tutorial-image-upload {
+.profile-image-upload {
   margin: 0 0 20px 0;
   display: flex;
   flex-direction: column;
 }
 
-.tutorial-image-upload span {
+.profile-image-upload span {
   margin-bottom:10px;
 }
 .container {

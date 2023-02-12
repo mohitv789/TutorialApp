@@ -1,7 +1,8 @@
+import { AuthService } from './auth.service';
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {AuthActions} from './action-types';
-import {tap} from 'rxjs/operators';
+import {concatMap, tap} from 'rxjs/operators';
 import {Router} from '@angular/router';
 
 
@@ -25,6 +26,7 @@ export class AuthEffects {
                 ofType(AuthActions.logout),
                 tap(action => {
                     localStorage.removeItem('user');
+                    this.authService.signout();
                     this.router.navigateByUrl('/login');
                 })
             )
@@ -42,8 +44,20 @@ export class AuthEffects {
     ,
     {dispatch: false});
 
+    profileUpdate$ = createEffect(() =>
+    this.actions$
+        .pipe(
+            ofType(AuthActions.updateProfile),
+            concatMap(async (action) => this.authService.updateProfile(
+                action.dName,
+                action.profilePhoto
+              ))
+        ),
+  {dispatch: false});
+
     constructor(private actions$: Actions,
-                private router: Router) {
+                private router: Router,
+                private authService: AuthService) {
 
     }
 

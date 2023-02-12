@@ -26,11 +26,20 @@
 
   </mat-form-field>
 
-  <mat-form-field>
 
-    <input matInput placeholder="Icon" formControlName="iconUrl" #iconUrl>
+  <div class="tutorial-image-upload">
 
-  </mat-form-field>
+    <span>Tutorial thumbnail:</span>
+
+    <img class="tutorial-thumbnail mat-elevation-z3"
+         [src]="iconUrl"
+         *ngIf="iconUrl">
+
+    <input type="file" (change)="uploadFile($event)">
+
+  </div>
+
+
 
 </div>
 

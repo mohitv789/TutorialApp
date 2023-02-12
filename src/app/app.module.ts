@@ -25,8 +25,6 @@ import {AngularFireFunctionsModule} from '@angular/fire/compat/functions';
 import { reducers} from './reducers';
 import { EntityDataModule } from '@ngrx/data';
 import { RouterState,StoreRouterConnectingModule } from '@ngrx/router-store';
-
-
 import {MatStepperModule} from '@angular/material/stepper';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -80,6 +78,7 @@ const routes: Routes = [
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireFunctionsModule,
+    AngularFireStorageModule,
     StoreRouterConnectingModule.forRoot({
       stateKey: 'router',
       routerState: RouterState.Minimal

@@ -1,3 +1,5 @@
+import { concatMap } from 'rxjs/operators';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { TutorialsHttpService } from './../services/tutorials-http.service';
 import { Section } from './../models/Section';
 import { tutorialSaved, tutorialUpdated } from './../tutorials.actions';
@@ -7,7 +9,7 @@ import { Store } from '@ngrx/store';
 import { Tutorial } from './../models/Tutorial';
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, last, tap, catchError, throwError, of } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -19,15 +21,15 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class TutorialEditDialogComponent implements OnInit{
   form!: UntypedFormGroup;
   tutorial!: Tutorial;
-
-  loading$!: Observable<boolean>;
+  iconUrl!: string;
 
   constructor(
       private fb: UntypedFormBuilder,
       private dialogRef: MatDialogRef<TutorialEditDialogComponent>,
       @Inject(MAT_DIALOG_DATA) data: any,
       private store: Store<AppState>,
-      private tutService: TutorialsHttpService) {
+      private tutService: TutorialsHttpService,
+      private storage: AngularFireStorage) {
       this.tutorial = data.tutorial;
 
       const formControls = {
@@ -38,6 +40,7 @@ export class TutorialEditDialogComponent implements OnInit{
       };
       this.form = this.fb.group(formControls);
       this.form.patchValue({...data.tutorial});
+      this.iconUrl = this.form.get("iconUrl")!.value;
   }
   ngOnInit(): void {
   }
@@ -60,7 +63,34 @@ export class TutorialEditDialogComponent implements OnInit{
     this.store.dispatch(tutorialUpdated({update}));
     this.dialogRef.close();
 
+  }
+
+  uploadFile(event: any) {
+
+    const file: File = event.target.files[0];
 
 
+    const filePath = `tutorials/${this.tutorial.id}/${file.name}`;
+    const task = this.storage.upload(filePath, file, {
+      cacheControl: "max-age=2592000,public"
+    });
+
+    task.snapshotChanges()
+            .pipe(
+                last(),
+                concatMap(() => this.storage.ref(filePath).getDownloadURL()),
+                tap(url => {
+                  // this.storage.storage.refFromURL(this.iconUrl).delete();
+                  this.iconUrl = url;
+                  this.form.get('iconUrl')!.setValue(url);
+                }),
+                catchError(err => {
+                    console.log(err);
+                    alert("Could not create thumbnail url.");
+                    return throwError(err);
+                })
+
+            )
+            .subscribe();
   }
 }

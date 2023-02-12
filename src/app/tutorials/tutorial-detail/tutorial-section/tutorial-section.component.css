@@ -1,3 +1,16 @@
 .container {
   padding: 25px;
 }
+.section-thumbnail {
+  max-width: 300px;
+  border-radius: 4px;
+  margin: 20px auto;
+  display: block;
+}
+
+.section {
+  text-align: center;
+  max-width: 1000px;
+  margin: 20px auto 0 auto;
+}
+

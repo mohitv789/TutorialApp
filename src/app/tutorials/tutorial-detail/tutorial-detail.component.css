@@ -1,12 +1,14 @@
 
 .course {
   text-align: center;
-  max-width: 800px;
+  max-width: 1000px;
   margin: 20px auto 0 auto;
+  min-height : 400px;
+  padding : 20px auto;
 }
 
 .course-thumbnail {
-  width: 200px;
+  max-width: 300px;
   border-radius: 4px;
   margin: 20px auto;
   display: block;
@@ -23,10 +25,14 @@
 }
 
 .bottom-toolbar {
-margin: 30px 0;
-font-size: 18px;
+  margin: 30px 0;
+  font-size: 18px;
 }
 .section-container {
   margin-top: 50px;
   margin-bottom: 50px;
+}
+.container {
+
+  justify-content: center;
 }

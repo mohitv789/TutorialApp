@@ -7,6 +7,11 @@ export const login = createAction(
     props<{user: User}>()
 );
 
+export const updateProfile = createAction(
+  "[Profile Page] User Profile Update",
+  props<{dName: string, profilePhoto: string}>()
+);
+
 export const signup = createAction(
   "[Signup Page] User Signup"
 );

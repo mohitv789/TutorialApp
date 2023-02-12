@@ -67,7 +67,7 @@ export class TutorialsHttpService {
   //     return from(this.db.doc(`tutorials/${tutorialId}`).delete());
   //   }
 
-    createTutorial(newTutorial: Partial<Tutorial>,newSections: Partial<Section[]>) {
+    createTutorial(tutorialId: string,newTutorial: Partial<Tutorial>,newSections: Partial<Section[]>) {
       return this.db.collection("tutorials",
               ref => ref.orderBy("seqNo", "desc").limit(1))
           .get()
@@ -86,20 +86,14 @@ export class TutorialsHttpService {
 
 
                   this.store.dispatch(loadAllTutorials());
-                  return this.db.collection("tutorials").add(tutorial).then((res) => {
-
-                    let tutId = res.id;
-                    this.db.collection("tutorials").doc(tutId).set({id: tutId,...tutorial});
-
-                    newSections.forEach((section: any)=> {
-                      return this.createSection(tutId, section);
-                    })
-
-                    return {
-                      id: res.id,
-                      ...tutorial
+                  return this.db.collection("tutorials").add(tutorial).then(
+                    (result) => {
+                      this.db.collection(`tutorials`).doc(result.id).set({id: result.id,...tutorial});
+                      newSections.forEach((section: any) => {
+                        this.createSection(result.id,section)
+                      })
                     }
-                  });
+                  );
 
           })
         )}

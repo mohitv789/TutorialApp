@@ -61,6 +61,7 @@ export class TutorialsEffects {
           .pipe(
               ofType(TutorialActions.tutorialSaved),
               concatMap(action => this.tutorialsHttpService.createTutorial(
+                  action.tutorialId,
                   action.tutorial,
                   action.sections
               ))

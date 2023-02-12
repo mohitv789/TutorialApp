@@ -22,15 +22,6 @@
                 formControlName="field">
 
       </mat-form-field>
-
-      <mat-form-field>
-
-        <input matInput
-                placeholder="Tutorial Icon Url"
-                formControlName="iconUrl">
-
-      </mat-form-field>
-
       <mat-form-field>
 
         <textarea matInput placeholder="Description"
@@ -40,6 +31,17 @@
 
       </mat-form-field>
 
+      <div class="section-image-upload">
+
+        <span>Tutorial Image:</span>
+
+        <img class="section-thumbnail mat-elevation-z3"
+             [src]="iconUrl"
+             *ngIf="iconUrl">
+
+        <input type="file" (change)="uploadFile($event)">
+
+      </div>
     </ng-container>
 
   </ng-container>
@@ -53,7 +55,7 @@
   </button>
 
   <button mat-raised-button color="primary"
-          [disabled]="!form.valid || (this.loading$ | async)" (click)="onSave()">
+          [disabled]="!form.valid" (click)="onSave()">
     Save
   </button>
 

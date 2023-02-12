@@ -2,7 +2,7 @@ import { SectionsRequested } from './../section.actions';
 import { selectSections } from './../sections.selector';
 import { selectTutorialById } from './../tutorials.selectors';
 import { AppState } from './../../reducers/index';
-import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { BehaviorSubject, Observable, catchError, of, tap } from 'rxjs';
 import { Tutorial } from '../models/Tutorial';
 import { Section } from '../models/Section';
@@ -14,8 +14,7 @@ import { TutorialEditDialogComponent } from '../tutorial-edit-dialog/tutorial-ed
 @Component({
   selector: 'app-tutorial-detail',
   templateUrl: './tutorial-detail.component.html',
-  styleUrls: ['./tutorial-detail.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./tutorial-detail.component.css']
 })
 export class TutorialDetailComponent implements OnInit {
   tutorial$!: Observable<any>;

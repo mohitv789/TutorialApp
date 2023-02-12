@@ -1,7 +1,7 @@
 import { loadAllTutorials } from './tutorials.actions';
 import { areTutorialsLoaded } from './tutorials.selectors';
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
+import {ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AppState} from '../reducers';
 import {select, Store} from '@ngrx/store';
@@ -13,7 +13,7 @@ export class TutorialsResolver implements Resolve<any> {
 
     loading = false;
 
-    constructor(private store: Store<AppState>) {
+    constructor(private store: Store<AppState>,private router: Router) {
 
     }
 

@@ -23,6 +23,6 @@ export const tutorialUpdated = createAction(
 
 export const tutorialSaved = createAction(
   "[Create Tutorial] Tutorial Created",
-  props<{tutorial: any,sections: any[]}>()
+  props<{tutorialId: string, tutorial: any,sections: any[]}>()
 );
 

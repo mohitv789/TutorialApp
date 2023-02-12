@@ -1,6 +1,6 @@
 import { SectionEditDialogComponent } from '../section-edit-dialog/section-edit-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -8,17 +8,17 @@ import { FormArray, FormBuilder, Validators } from '@angular/forms';
   templateUrl: './tutorial-create-part-b.component.html',
   styleUrls: ['./tutorial-create-part-b.component.css']
 })
-export class TutorialCreatePartBComponent {
+export class TutorialCreatePartBComponent implements OnInit{
   form = this.fb.group({
     sections: this.fb.array([])
   });
-
 
 constructor(private fb:FormBuilder,
   private dialog: MatDialog) {
 
 }
-
+ngOnInit(): void {
+}
 get sections() {
   return this.form.controls["sections"] as FormArray;
 }
@@ -44,4 +44,6 @@ addSection() {
   deleteSection(sectionIndex: number) {
     this.sections.removeAt(sectionIndex);
   }
+
+
 }

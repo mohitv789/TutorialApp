@@ -1,19 +1,38 @@
-<div class="course" *ngIf="(tutorial$ | async) as tutorial">
+<div class="container">
+  <div class="course row" *ngIf="(tutorial$ | async) as tutorial">
+    <div class="col-5">
+      <img [src]="tutorial.iconUrl" class="course-thumbnail mat-elevation-z8">
+    </div>
+    <div class="col-7">
+      <div class="row" style="margin: 20px auto;text-align:left;">
+        <div class="col-8">
 
-  <h2>{{tutorial.description}}</h2>
-  <button mat-mini-fab color="accent" *ngIf="!!(tutorial.owner.toString() == user_id.toString())" (click)="editTutorial(tutorial)">
-    <mat-icon class="add-course-btn" >edit</mat-icon>
-  </button>
-  <img [src]="tutorial.iconUrl" class="course-thumbnail mat-elevation-z8">
-  <p>{{tutorial.longDescription}}</p>
+          <h2>{{tutorial.description}}</h2>
+        </div>
+        <div class="col-4">
+          <button mat-mini-fab color="accent" *ngIf="!!(tutorial.owner.toString() == user_id.toString())" (click)="editTutorial(tutorial)">
+            <mat-icon class="add-course-btn" >edit</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="row" style="margin: 20px auto;text-align:left;">
+        <p>{{tutorial.longDescription}}</p>
+      </div>
+    </div>
+
+
+
+  </div>
+
+
   <div class="spinner-container" *ngIf="loading">
 
       <mat-spinner></mat-spinner>
 
   </div>
 
-  <div class="section-container" *ngIf="(sections$ | async) as sections">
-    <mat-tab-group dynamicHeight>
+  <div class="section-container row" *ngIf="(sections$ | async) as sections">
+    <mat-tab-group dynamicHeight [color]="'accent'" [backgroundColor]="'primary'" animationDuration="1000ms">
       <mat-tab
         class="mat-tab"
         *ngFor="let sectionEl of sections; let index = index"
@@ -26,9 +45,8 @@
       </mat-tab>
     </mat-tab-group>
   </div>
-
-
 </div>
+
 
 
 

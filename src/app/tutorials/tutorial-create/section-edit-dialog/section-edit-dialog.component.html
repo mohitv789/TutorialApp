@@ -25,14 +25,6 @@
 
       <mat-form-field>
 
-        <input matInput
-                placeholder="Image"
-                formControlName="image">
-
-      </mat-form-field>
-
-      <mat-form-field>
-
         <textarea matInput placeholder="Solution"
                   formControlName="solution" cdkTextareaAutosize
                   cdkAutosizeMinRows="5"
@@ -41,6 +33,18 @@
         </textarea>
 
       </mat-form-field>
+
+      <div class="section-image-upload">
+
+        <span>Section Image:</span>
+
+        <img class="section-thumbnail mat-elevation-z3"
+             [src]="image"
+             *ngIf="image">
+
+        <input type="file" (change)="uploadFile($event)">
+
+      </div>
 
     </ng-container>
 

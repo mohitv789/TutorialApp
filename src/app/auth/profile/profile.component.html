@@ -1,0 +1,32 @@
+<mat-card class="container">
+  <mat-card-title>Profile</mat-card-title>
+  <mat-card-content>
+      <form [formGroup]="form" class="profile-form">
+
+          <mat-form-field>
+
+              <input matInput type="text"
+                     placeholder="Display Name"
+                     formControlName="displayName">
+
+          </mat-form-field>
+
+          <div class="profile-image-upload">
+
+            <span>Profile Picture:</span>
+
+            <img class="profile-thumbnail mat-elevation-z3"
+                 [src]="photoUrl"
+                 *ngIf="photoUrl">
+
+            <input type="file" (change)="uploadFile($event)">
+
+          </div>
+
+          <button mat-raised-button color="primary"
+                  (click)="updateProfile()"
+                  [disabled]="!form.valid">Update Profile</button>
+
+      </form>
+  </mat-card-content>
+</mat-card>

@@ -14,6 +14,7 @@ import {AuthGuard} from './auth.guard';
 import {EffectsModule} from '@ngrx/effects';
 import {AuthEffects} from './auth.effects';
 import { SignupComponent } from './signup/signup.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
     imports: [
@@ -24,13 +25,14 @@ import { SignupComponent } from './signup/signup.component';
         MatButtonModule,
         RouterModule.forChild([
           {path: 'login', component: LoginComponent},
-          {path: 'signup', component: SignupComponent}
+          {path: 'signup', component: SignupComponent},
+          {path: 'profile', component: ProfileComponent},
         ]),
         StoreModule.forFeature('auth', authReducer),
         EffectsModule.forFeature([AuthEffects])
     ],
-    declarations: [LoginComponent,SignupComponent],
-    exports: [LoginComponent,SignupComponent]
+    declarations: [LoginComponent,SignupComponent,ProfileComponent],
+    exports: [LoginComponent,SignupComponent,ProfileComponent]
 })
 export class AuthModule {
     static forRoot(): ModuleWithProviders<AuthModule> {

@@ -18,19 +18,41 @@
             <span>Signup</span>
         </a>
 
-          <a mat-list-item  (click)="logout()" *ngIf="isLoggedIn$ | async">
-              <mat-icon>exit_to_app</mat-icon>
-              <span>Logout</span>
-          </a>
+        <a mat-list-item routerLink="/profile" *ngIf="isLoggedIn$ | async">
+          <mat-icon>face</mat-icon>
+          <span>Profile</span>
+        </a>
+
+        <a mat-list-item  (click)="logout()" *ngIf="isLoggedIn$ | async">
+            <mat-icon>exit_to_app</mat-icon>
+            <span>Logout</span>
+        </a>
 
       </mat-nav-list>
 
   </mat-sidenav>
 
+
   <mat-toolbar color="primary">
-      <button class="menu-button" mat-icon-button (click)="start.open('mouse')">
-          <mat-icon>menu</mat-icon>
+
+    <div class="toolbar-tools">
+
+      <button mat-icon-button (click)="start.open('mouse')">
+        <mat-icon>menu</mat-icon>
       </button>
+
+      <div class="filler"></div>
+
+      <ng-container *ngIf="(user.pictureUrl$ | async) as pictureUrl">
+
+        <img class="user-avatar" [src]="pictureUrl">
+        <span style="margin-left: 10px;">{{user.displayName$ | async}}</span>
+
+      </ng-container>
+
+    </div>
+
+
   </mat-toolbar>
 
 <div class="spinner-container" *ngIf="loading">
