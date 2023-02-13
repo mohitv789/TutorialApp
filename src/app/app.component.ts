@@ -6,6 +6,8 @@ import { Store, select } from '@ngrx/store';
 import { login, logout } from './auth/auth.actions';
 import { isLoggedIn, isLoggedOut } from './auth/auth.selectors';
 import { UserService } from './auth/user.service';
+import { selectAllTutorials } from './tutorials/tutorials.selectors';
+import { loadAllTutorials } from './tutorials/tutorials.actions';
 
 @Component({
   selector: 'app-root',
@@ -31,6 +33,7 @@ export class AppComponent implements OnInit{
 
       if (userProfile) {
           this.store.dispatch(login({user: JSON.parse(userProfile)}));
+          this.store.dispatch(loadAllTutorials());
       }
 
       this.router.events.subscribe(event => {

@@ -22,6 +22,7 @@ export class TutorialEditDialogComponent implements OnInit{
   form!: UntypedFormGroup;
   tutorial!: Tutorial;
   iconUrl!: string;
+  percentageChanges$!: Observable<any>;
 
   constructor(
       private fb: UntypedFormBuilder,
@@ -40,7 +41,6 @@ export class TutorialEditDialogComponent implements OnInit{
       };
       this.form = this.fb.group(formControls);
       this.form.patchValue({...data.tutorial});
-      this.iconUrl = this.form.get("iconUrl")!.value;
   }
   ngOnInit(): void {
   }
@@ -74,13 +74,12 @@ export class TutorialEditDialogComponent implements OnInit{
     const task = this.storage.upload(filePath, file, {
       cacheControl: "max-age=2592000,public"
     });
-
+    this.percentageChanges$ = task.percentageChanges();
     task.snapshotChanges()
             .pipe(
                 last(),
                 concatMap(() => this.storage.ref(filePath).getDownloadURL()),
                 tap(url => {
-                  // this.storage.storage.refFromURL(this.iconUrl).delete();
                   this.iconUrl = url;
                   this.form.get('iconUrl')!.setValue(url);
                 }),

@@ -13,9 +13,10 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 export class TutorialCreatePartAComponent {
   canshow: boolean = false;
   iconUrl!: string;
-  // percentageChanges$: Observable<number>;
+  percentageChanges$!: Observable<any>;
   tutorialId!: string;
   form = this.fb.group({
+    iconUrl: ['', Validators.required],
     description: ['', {
         validators: [
             Validators.required,
@@ -58,12 +59,6 @@ ngOnInit() {
         .subscribe( val => localStorage.setItem("STEP_1", JSON.stringify(val)));
 
   }
-  selectedFile: any = null;
-
-  onFileSelected(event: any): void {
-      this.selectedFile = event.target.files[0] ?? null;
-
-  }
 
   uploadFile(event: any) {
 
@@ -75,7 +70,7 @@ ngOnInit() {
       cacheControl: "max-age=2592000,public"
     });
 
-    // this.percentageChanges$ = task.percentageChanges();
+    this.percentageChanges$ = task.percentageChanges();
 
     task.snapshotChanges()
             .pipe(
@@ -86,6 +81,7 @@ ngOnInit() {
                   localStorage.setItem("STEP_1_ID", JSON.stringify(this.tutorialId));
                   this.iconUrl = url;
                   this.canshow = true;
+                  this.form.get('iconUrl')!.setValue(url);
                 }),
                 catchError(err => {
                     console.log(err);

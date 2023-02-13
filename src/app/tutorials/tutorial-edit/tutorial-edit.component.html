@@ -1,70 +1,161 @@
+<div *ngIf="!!section">
+  <h2 mat-dialog-title>{{section.description}}</h2>
 
-<h2 mat-dialog-title>{{section.description}}</h2>
+  <mat-dialog-content>
 
-<mat-dialog-content>
+    <ng-container *ngIf="form">
 
-  <ng-container *ngIf="form">
+      <ng-container [formGroup]="form">
 
-    <ng-container [formGroup]="form">
+        <mat-form-field>
 
-      <mat-form-field>
+          <input matInput
+                 placeholder="Title"
+                 formControlName="description">
 
-        <input matInput
-               placeholder="Title"
-               formControlName="description">
+        </mat-form-field>
 
-      </mat-form-field>
+        <mat-form-field>
 
-      <mat-form-field>
+          <input matInput
+                  placeholder="Sequence"
+                  formControlName="seqNo">
 
-        <input matInput
-                placeholder="Sequence"
-                formControlName="seqNo">
+        </mat-form-field>
 
-      </mat-form-field>
+        <mat-form-field>
 
-      <mat-form-field>
+          <textarea matInput placeholder="Solution"
+                    formControlName="solution" cdkTextareaAutosize
+                    cdkAutosizeMinRows="5"
+                    cdkAutosizeMaxRows="8">
 
-        <textarea matInput placeholder="Solution"
-                  formControlName="solution" cdkTextareaAutosize
-                  cdkAutosizeMinRows="5"
-                  cdkAutosizeMaxRows="8">
+          </textarea>
 
-        </textarea>
+        </mat-form-field>
 
-      </mat-form-field>
+        <div class="section-image-upload">
 
-      <div class="section-image-upload">
+          <span>Section Image:</span>
 
-        <span>Section Image:</span>
+          <img class="section-thumbnail mat-elevation-z3"
+               [src]="image"
+               *ngIf="image">
 
-        <img class="section-thumbnail mat-elevation-z3"
-             [src]="image"
-             *ngIf="image">
+          <input type="file" (change)="uploadFile($event)">
+          <div class="upload-progress" *ngIf="(percentageChanges$ | async) as percentage">
 
-        <input type="file" (change)="uploadFile($event)">
+            <mat-progress-bar class="progress-bar"
+                              mode="determinate"
+             [value]="percentage">
 
-      </div>
+            </mat-progress-bar>
+
+            <span>{{percentage / 100 | percent}}</span>
+
+          </div>
+        </div>
+
+      </ng-container>
+
 
     </ng-container>
 
+  </mat-dialog-content>
 
-  </ng-container>
+  <mat-dialog-actions>
 
-</mat-dialog-content>
+    <button mat-raised-button (click)="onClose()">
+      Cancel Edit
+    </button>
 
-<mat-dialog-actions>
+    <button mat-raised-button color="primary"
+            [disabled]="!form.valid || !form.value.image" (click)="onSave()">
+      Edit Section
+    </button>
 
-  <button mat-raised-button (click)="onClose()">
-    Cancel Edit
-  </button>
+  </mat-dialog-actions>
 
-  <button mat-raised-button color="primary"
-          [disabled]="!form.valid" (click)="onSave()">
-    Edit Section
-  </button>
+</div>
 
-</mat-dialog-actions>
+<div *ngIf="!section">
+
+  <mat-dialog-content>
+
+    <ng-container *ngIf="form">
+
+      <ng-container [formGroup]="form">
+
+        <mat-form-field>
+
+          <input matInput
+                placeholder="Title"
+                formControlName="description">
+
+        </mat-form-field>
+
+        <mat-form-field>
+
+          <input matInput
+                  placeholder="Sequence"
+                  formControlName="seqNo">
+
+        </mat-form-field>
+
+        <mat-form-field>
+
+          <textarea matInput placeholder="Solution"
+                    formControlName="solution" cdkTextareaAutosize
+                    cdkAutosizeMinRows="5"
+                    cdkAutosizeMaxRows="8">
+
+          </textarea>
+
+        </mat-form-field>
+
+        <div class="section-image-upload">
+
+          <span>Section Image:</span>
+
+          <img class="section-thumbnail mat-elevation-z3"
+              [src]="image"
+              *ngIf="image">
+
+          <input type="file" (change)="uploadFile($event)">
+          <div class="upload-progress" *ngIf="(percentageChanges$ | async) as percentage">
+
+            <mat-progress-bar class="progress-bar"
+                              mode="determinate"
+            [value]="percentage">
+
+            </mat-progress-bar>
+
+            <span>{{percentage / 100 | percent}}</span>
+
+          </div>
+        </div>
+
+      </ng-container>
+
+
+    </ng-container>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+
+    <button mat-raised-button (click)="onClose()">
+      Cancel Add
+    </button>
+
+    <button mat-raised-button color="primary"
+            [disabled]="!form.valid || !form.value.image" (click)="onSave()">
+      Add Section
+    </button>
+
+  </mat-dialog-actions>
+
+</div>
 
 
 

@@ -6,8 +6,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Observable, catchError, concatMap, last, tap, throwError } from 'rxjs';
 import { Update } from '@ngrx/entity';
-import { SectionUpdated } from '../section.actions';
+import { SectionSaved, SectionUpdated } from '../section.actions';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { ActivatedRoute, Params } from '@angular/router';
 @Component({
   selector: 'app-tutorial-edit',
   templateUrl: './tutorial-edit.component.html',
@@ -18,15 +19,15 @@ export class TutorialEditComponent implements OnInit{
   section!: Section;
   tutorialId!: string;
   image!: string;
+  percentageChanges$!: Observable<any>;
   constructor(
+      private route: ActivatedRoute,
       private fb: UntypedFormBuilder,
       private dialogRef: MatDialogRef<TutorialEditComponent>,
       @Inject(MAT_DIALOG_DATA) data: any,
       private store: Store<AppState>,
       private storage: AngularFireStorage) {
 
-      this.section = data.section;
-      this.tutorialId = data.section.tutorialId;
       const formControls = {
         description: ['', Validators.required],
         seqNo: ['', Validators.required],
@@ -35,7 +36,15 @@ export class TutorialEditComponent implements OnInit{
         tutorialId: [this.tutorialId]
       };
       this.form = this.fb.group(formControls);
-      this.form.patchValue({...data.section});
+      if (!!data.section) {
+        this.section = data.section;
+        this.form.patchValue({...data.section});
+      }
+
+      if (!!data.tutorialId) {
+        this.tutorialId = data.tutorialId;
+        this.form.patchValue({...data.tutorialId});
+      }
   }
   ngOnInit(): void {
   }
@@ -55,7 +64,14 @@ export class TutorialEditComponent implements OnInit{
       changes: section
     };
 
-    this.store.dispatch(SectionUpdated({update}));
+    if (section.id && section.description) {
+      this.store.dispatch(SectionUpdated({update}));
+    } else if (!section.id) {
+      this.store.dispatch(SectionSaved({tutorialId:this.tutorialId,section: section}));
+      console.log({...this.form.value})
+    }
+
+
 
     this.dialogRef.close();
 
@@ -72,7 +88,7 @@ export class TutorialEditComponent implements OnInit{
     const task = this.storage.upload(filePath, file, {
       cacheControl: "max-age=2592000,public"
     });
-
+    this.percentageChanges$ = task.percentageChanges();
     task.snapshotChanges()
             .pipe(
                 last(),

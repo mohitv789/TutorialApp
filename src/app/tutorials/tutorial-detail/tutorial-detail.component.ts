@@ -1,3 +1,4 @@
+import { TutorialEditComponent } from './../tutorial-edit/tutorial-edit.component';
 import { SectionsRequested } from './../section.actions';
 import { selectSections } from './../sections.selector';
 import { selectTutorialById } from './../tutorials.selectors';
@@ -52,15 +53,16 @@ export class TutorialDetailComponent implements OnInit {
       this.loadSectionsPage();
 
       this.sections$ = this.store.pipe(select(selectSections(this.id)));
-      setTimeout(() => {
-
+      if (!!this.tutorial$) {
         this.tutorial$.subscribe((result: Tutorial) => {
+          console.log(result);
 
           if (result.owner.toString() == JSON.parse(localStorage.getItem("user")!).uid.toString()) {
             this.canshow = true;
           }
         })
-      }, 250)
+      }
+
 
       this.user_id = JSON.parse(localStorage.getItem("user")!).uid;
   }
@@ -97,6 +99,25 @@ export class TutorialDetailComponent implements OnInit {
       .afterClosed()
       .subscribe(val => {
         if (val) {
+            this.tutorialChanged.emit();
+        }
+    });
+
+  }
+
+  addSection() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.minWidth = "800px";
+    dialogConfig.data = {
+      tutorialId:this.id
+    };
+    this.dialog.open(TutorialEditComponent, dialogConfig)
+      .afterClosed()
+      .subscribe(val => {
+        if (val) {
+            console.log(val);
             this.tutorialChanged.emit();
         }
     });

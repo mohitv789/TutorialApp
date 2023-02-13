@@ -29,6 +29,8 @@ import {MatStepperModule} from '@angular/material/stepper';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { QuillModule } from 'ngx-quill';
 const routes: Routes = [
   {
       path: 'tutorials',
@@ -54,6 +56,7 @@ const routes: Routes = [
     MatIconModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
+    MatProgressBarModule,
     MatListModule,
     MatToolbarModule,
     MatStepperModule,
@@ -82,7 +85,23 @@ const routes: Routes = [
     StoreRouterConnectingModule.forRoot({
       stateKey: 'router',
       routerState: RouterState.Minimal
-  })
+    }),
+    QuillModule.forRoot({
+			modules: {
+				syntax: false,
+				toolbar: [
+          ['bold', 'italic', 'underline', 'strike'],
+          ["blockquote", "code-block"],
+          [{ size: ["small", false, "large", "huge"] }],
+					[{ list: 'ordered' }, { list: 'bullet' }],
+					[{ indent: '-1' }, { indent: '+1' }],
+          [{ 'color': [] }, { background: [] }],
+          [{ 'font': [] }],
+          [{ 'align': [] }],
+          ["clean"],
+				]
+			}
+		}),
   ],
   providers: [
   {

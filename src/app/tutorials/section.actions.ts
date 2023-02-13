@@ -17,3 +17,7 @@ export const SectionUpdated = createAction(
   props<{update: Update<Section>}>()
 );
 
+export const SectionSaved = createAction(
+  "[Create Section] Section Created",
+  props<{tutorialId: string, section: any}>()
+);

@@ -28,7 +28,7 @@ export class ProfileComponent implements OnInit{
       private storage: AngularFireStorage) {
 
       this.form = fb.group({
-          displayName: ["", [Validators.required]],
+          displayName: [this.displayName, [Validators.required]],
       });
 
   }

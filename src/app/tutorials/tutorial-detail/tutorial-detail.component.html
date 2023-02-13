@@ -10,7 +10,7 @@
           <h2>{{tutorial.description}}</h2>
         </div>
         <div class="col-4">
-          <button mat-mini-fab color="accent" *ngIf="!!(tutorial.owner.toString() == user_id.toString())" (click)="editTutorial(tutorial)">
+          <button mat-mini-fab color="accent" *ngIf="!!(canshow)" (click)="editTutorial(tutorial)">
             <mat-icon class="add-course-btn" >edit</mat-icon>
           </button>
         </div>
@@ -43,6 +43,19 @@
           [canShow]="!!canshow"
         ></app-tutorial-section>
       </mat-tab>
+      <mat-tab *ngIf="!!(canshow)" >
+        <ng-template mat-tab-label>
+          <mat-icon class="add-course-btn" >add</mat-icon>
+
+        </ng-template>
+        <div class="container" style="justify-content:center;margin: 25px auto; padding: 25px auto;">
+
+          <h1>Add New Section</h1>
+          <button color="accent" (click)="addSection()">
+            Add Section
+          </button>
+        </div>
+    </mat-tab>
     </mat-tab-group>
   </div>
 </div>

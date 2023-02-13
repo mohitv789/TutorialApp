@@ -1,4 +1,4 @@
-import { SectionsLoaded, SectionUpdated, SectionsRequested } from './section.actions';
+import { SectionsLoaded, SectionUpdated, SectionsRequested, SectionSaved } from './section.actions';
 import { allTutorialsLoaded } from './tutorials.actions';
 
 import {Injectable} from '@angular/core';
@@ -68,6 +68,18 @@ export class TutorialsEffects {
           ),
       {dispatch: false}
   );
+
+  createSection$ = createEffect(
+    () => this.actions$
+        .pipe(
+            ofType(SectionSaved),
+            concatMap(action => this.tutorialsHttpService.createSection(
+                action.tutorialId,
+                action.section
+            ))
+        ),
+    {dispatch: false}
+);
 
     constructor(private actions$: Actions,
                 private tutorialsHttpService: TutorialsHttpService) {

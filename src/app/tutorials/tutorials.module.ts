@@ -29,12 +29,13 @@ import {RouterModule, Routes} from '@angular/router';
 import { TutorialDetailComponent } from './tutorial-detail/tutorial-detail.component';
 import { TutorialsListComponent } from './tutorials-list/tutorials-list.component';
 import { TutorialEditComponent } from './tutorial-edit/tutorial-edit.component';
-
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { TutorialsHttpService } from './services/tutorials-http.service';
 
 import { TutorialsResolver } from './tutorials.resolver';
 import { MatStepperModule } from '@angular/material/stepper';
 import { TutorialSectionComponent } from './tutorial-detail/tutorial-section/tutorial-section.component';
+import { TutorialResolver } from './tutorial.resolver';
 
 export const tutorialsRoutes: Routes = [
   {
@@ -52,6 +53,9 @@ export const tutorialsRoutes: Routes = [
   {
       path: ':tutorialID',
       component: TutorialDetailComponent,
+      resolve: {
+        tutorials: TutorialResolver
+      }
   },
 ];
 
@@ -71,7 +75,8 @@ export const tutorialsRoutes: Routes = [
     MatSlideToggleModule,
     MatDialogModule,
     MatSelectModule,
-
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
     MatStepperModule,
     MatDatepickerModule,
     ReactiveFormsModule,
@@ -92,6 +97,7 @@ export const tutorialsRoutes: Routes = [
       TutorialSectionComponent,
       SectionEditDialogComponent
   ],
+
   exports: [
       HomeComponent,
       TutorialsListComponent,
@@ -111,7 +117,8 @@ export const tutorialsRoutes: Routes = [
   ],
   providers: [
     TutorialsHttpService,
-    TutorialsResolver
+    TutorialsResolver,
+    TutorialResolver
   ]
 })
 export class TutorialsModule {

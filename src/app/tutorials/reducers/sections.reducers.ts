@@ -26,7 +26,9 @@ export const sectionsReducer = createReducer(
               ...state
             })),
     on(SectionActions.SectionUpdated, (state, action) =>
-        adapterS.updateOne(action.update, state) )
+        adapterS.updateOne(action.update, state) ),
+    on(SectionActions.SectionSaved, (state, action) =>
+        adapterS.addOne(action.section, state) )
 
 );
 export const {

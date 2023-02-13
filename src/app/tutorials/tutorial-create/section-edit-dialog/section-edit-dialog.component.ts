@@ -17,6 +17,7 @@ export class SectionEditDialogComponent implements OnInit{
     image: ['', Validators.required],
   });
 
+  percentageChanges$!: Observable<any>;
   tutorialId!: string;
   image!: string;
   loading$!: Observable<boolean>;
@@ -49,7 +50,7 @@ export class SectionEditDialogComponent implements OnInit{
     const filePath = `tutorials/${this.tutorialId}/${file.name}`;
     const task = this.storage.upload(filePath, file);
 
-    // this.percentageChanges$ = task.percentageChanges();
+    this.percentageChanges$ = task.percentageChanges();
 
     task.snapshotChanges()
             .pipe(
