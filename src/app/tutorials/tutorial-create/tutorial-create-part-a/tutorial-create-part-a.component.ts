@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { filter, last, Observable, tap, catchError, throwError } from 'rxjs';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { ToxicityService } from 'ngx-tfjs';
 
 @Component({
   selector: 'app-tutorial-create-part-a',
@@ -39,7 +40,8 @@ export class TutorialCreatePartAComponent {
 });
 
 constructor(private fb: FormBuilder,
-  private afs : AngularFirestore, private storage: AngularFireStorage) {
+  private afs : AngularFirestore, private storage: AngularFireStorage,
+  private service: ToxicityService) {
 
 }
 

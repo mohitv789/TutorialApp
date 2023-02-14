@@ -11,13 +11,16 @@
 
         <input matInput
                placeholder="Title"
-               formControlName="description">
+               formControlName="description" #description>
+        <mat-hint align="start" *ngIf="(description.value.length > 3)">
+          {{ description.value| toxicity | async | emojify }}
+        </mat-hint>
 
       </mat-form-field>
 
       <mat-form-field>
 
-        <input matInput
+        <input matInput type="number"
                 placeholder="Sequence"
                 formControlName="seqNo">
 
@@ -25,12 +28,15 @@
 
       <mat-form-field>
 
-        <textarea matInput placeholder="Solution"
+        <textarea matInput placeholder="Solution" #solution
                   formControlName="solution" cdkTextareaAutosize
                   cdkAutosizeMinRows="5"
                   cdkAutosizeMaxRows="8">
 
         </textarea>
+        <mat-hint align="start" *ngIf="(solution.value.length > 3)">
+          {{ solution.value| toxicity | async | emojify }}
+        </mat-hint>
 
       </mat-form-field>
 

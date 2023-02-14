@@ -32,6 +32,8 @@ import { TutorialEditComponent } from './tutorial-edit/tutorial-edit.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { TutorialsHttpService } from './services/tutorials-http.service';
 
+import { EmojifyPipe } from './emojify.pipe';
+import { ToxicityModule } from 'ngx-tfjs';
 import { TutorialsResolver } from './tutorials.resolver';
 import { MatStepperModule } from '@angular/material/stepper';
 import { TutorialSectionComponent } from './tutorial-detail/tutorial-section/tutorial-section.component';
@@ -54,7 +56,7 @@ export const tutorialsRoutes: Routes = [
       path: ':tutorialID',
       component: TutorialDetailComponent,
       resolve: {
-        tutorials: TutorialResolver
+        tutorial$: TutorialResolver
       }
   },
 ];
@@ -83,7 +85,8 @@ export const tutorialsRoutes: Routes = [
     RouterModule.forChild(tutorialsRoutes),
     EffectsModule.forFeature([TutorialsEffects]),
     StoreModule.forFeature("tutorials", tutorialsReducer),
-    StoreModule.forFeature("sections", sectionsReducer)
+    StoreModule.forFeature("sections", sectionsReducer),
+    ToxicityModule
   ],
   declarations: [
       HomeComponent,
@@ -95,7 +98,8 @@ export const tutorialsRoutes: Routes = [
       TutorialCreatePartAComponent,
       TutorialCreatePartBComponent,
       TutorialSectionComponent,
-      SectionEditDialogComponent
+      SectionEditDialogComponent,
+      EmojifyPipe
   ],
 
   exports: [

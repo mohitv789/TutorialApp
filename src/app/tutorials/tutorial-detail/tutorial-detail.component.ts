@@ -1,3 +1,4 @@
+import { TutorialsHttpService } from './../services/tutorials-http.service';
 import { TutorialEditComponent } from './../tutorial-edit/tutorial-edit.component';
 import { SectionsRequested } from './../section.actions';
 import { selectSections } from './../sections.selector';
@@ -34,7 +35,8 @@ export class TutorialDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private store: Store<AppState>,
-    private dialog: MatDialog) {
+    private dialog: MatDialog,
+    private http: TutorialsHttpService) {
 
   }
 
@@ -45,27 +47,45 @@ export class TutorialDetailComponent implements OnInit {
           this.id = params['tutorialID'];
         }
       );
-
-      this.tutorial$ = this.store.pipe(select(selectTutorialById(this.id)))
-
+      this.user_id = JSON.parse(localStorage.getItem("user")!).uid;
+      this.loadTutorial();
+      this.loadSectionsPage();
       // this.dataSource = new SectionsDataSource(this.store);
 
-      this.loadSectionsPage();
 
-      this.sections$ = this.store.pipe(select(selectSections(this.id)));
-      if (!!this.tutorial$) {
+
+
+  }
+
+  loadTutorial() {
+    this.tutorial$ = this.store.pipe(select(selectTutorialById(this.id)));
+    this.tutorial$.subscribe((result: Tutorial) => {
+      if (!!result) {
+
+        this.sections$ = this.store.pipe(select(selectSections(this.id)));
         this.tutorial$.subscribe((result: Tutorial) => {
           console.log(result);
 
-          if (result.owner.toString() == JSON.parse(localStorage.getItem("user")!).uid.toString()) {
+        if (result.owner.toString() == this.user_id.toString()) {
+          this.canshow = true;
+          }}
+        )
+
+      } else {
+        this.tutorial$ = this.http.findTutorialById(this.id);
+        this.sections$ = this.store.pipe(select(selectSections(this.id)));
+        this.tutorial$.subscribe((httpResult: Tutorial) => {
+
+
+          if (httpResult.owner.toString() == this.user_id.toString()) {
             this.canshow = true;
+            }
           }
-        })
+        )
       }
+    }
+  )}
 
-
-      this.user_id = JSON.parse(localStorage.getItem("user")!).uid;
-  }
   loadSectionsPage() {
 
     this.store

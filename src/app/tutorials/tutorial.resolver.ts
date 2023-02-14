@@ -1,8 +1,9 @@
+import { TutorialsHttpService } from './services/tutorials-http.service';
 import { loadAllTutorials } from './tutorials.actions';
-import { areTutorialsLoaded } from './tutorials.selectors';
+import { areTutorialsLoaded, selectTutorialById } from './tutorials.selectors';
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from '@angular/router';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {AppState} from '../reducers';
 import {select, Store} from '@ngrx/store';
 import {filter, finalize, first, tap} from 'rxjs/operators';
@@ -13,26 +14,15 @@ export class TutorialResolver implements Resolve<any> {
 
     loading = false;
 
-    constructor(private store: Store<AppState>,private router: Router) {
+    constructor(private http:TutorialsHttpService) {
 
     }
 
     resolve(route: ActivatedRouteSnapshot,
-            state: RouterStateSnapshot): Observable<any> {
+            state: RouterStateSnapshot,): Observable<any> {
+        const tutorialId = route.paramMap.get("tutorialID");
+        return this.http.findTutorialById(tutorialId!);
 
-        return this.store
-            .pipe(
-                select(areTutorialsLoaded),
-                tap(tutorialsLoaded => {
-                    if (!this.loading && !tutorialsLoaded) {
-                        this.loading = true;
-                        this.store.dispatch(loadAllTutorials());
-                    }
-                }),
-                filter(tutorialsLoaded => tutorialsLoaded),
-                first(),
-                finalize(() => this.loading = false)
-            );
 
     }
 
