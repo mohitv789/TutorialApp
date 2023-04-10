@@ -1,0 +1,32 @@
+
+
+.title {
+  text-align: center;
+  margin-right: 15px;
+
+}
+
+.tutorials-panel {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+
+.counters {
+  display: flex;
+}
+
+.filler {
+  flex: 1 1 auto;
+}
+
+h2 {
+font-family: "Roboto";
+}
+
+.header {
+display: flex;
+justify-content: center;
+align-items: center;
+
+}

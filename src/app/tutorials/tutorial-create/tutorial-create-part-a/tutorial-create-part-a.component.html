@@ -1,0 +1,55 @@
+<div [formGroup]="form">
+
+  <mat-form-field>
+
+      <input matInput placeholder="Title" formControlName="description" #description>
+
+      <mat-hint align="end">
+          {{ description.value.length }} / 60
+      </mat-hint>
+
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+
+      <textarea matInput placeholder="Description" formControlName="longDescription" cdkTextareaAutosize
+        cdkAutosizeMinRows="5"
+        cdkAutosizeMaxRows="8">
+
+      </textarea>
+
+  </mat-form-field>
+
+  <mat-form-field>
+
+    <input matInput placeholder="Scope" formControlName="field" #field>
+
+  </mat-form-field>
+
+
+  <div class="tutorial-image-upload">
+
+    <span>Tutorial thumbnail:</span>
+
+    <img class="tutorial-thumbnail mat-elevation-z3"
+         [src]="iconUrl"
+         *ngIf="iconUrl">
+
+    <input type="file" (change)="uploadFile($event)">
+    <div class="upload-progress" *ngIf="(percentageChanges$ | async) as percentage">
+
+      <mat-progress-bar class="progress-bar"
+                        mode="determinate"
+       [value]="percentage">
+
+      </mat-progress-bar>
+
+      <span>{{percentage / 100 | percent}}</span>
+
+    </div>
+  </div>
+
+
+
+</div>
+

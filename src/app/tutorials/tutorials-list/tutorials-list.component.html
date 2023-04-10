@@ -1,0 +1,25 @@
+
+
+<mat-card *ngFor="let tutorial of tutorials" class="course-card mat-elevation-z10">
+
+  <mat-card-header style="max-width: 400px;">
+
+      <mat-card-title>{{tutorial.description}}</mat-card-title>
+
+  </mat-card-header>
+
+  <img mat-card-image [src]="tutorial.iconUrl" style="max-width: 400px;justify-content: center;">
+
+  <mat-card-content style="text-align: center;">
+      <p>{{tutorial.longDescription?.slice(0,100)}}</p>
+  </mat-card-content>
+
+  <mat-card-actions class="course-actions">
+
+      <button mat-raised-button color="primary" [routerLink]="['/tutorials', tutorial.id]">
+          VIEW
+      </button>
+
+  </mat-card-actions>
+
+</mat-card>

@@ -1,0 +1,20 @@
+<div class="tutorials-panel">
+
+  <div class="header">
+
+    <h2 class="title">All Tutorials</h2>
+
+    <button mat-mini-fab class="add-course-btn" (click)="onAddTutorial()">
+      Add
+    </button>
+
+  </div>
+
+  <div *ngIf="(tutorials$ | async) as result" >
+
+    <app-tutorials-list (tutorialChanged)="reload()" [tutorials]="result"></app-tutorials-list>
+
+  </div>
+
+</div>
+

@@ -1,0 +1,53 @@
+
+<div class="create-course-panel data-form">
+
+  <h2 class="title">Create New Tutorial</h2>
+
+    <mat-horizontal-stepper [linear]="true" #stepper="matHorizontalStepper"
+                            class="mat-elevation-z5" labelPosition="bottom">
+
+        <mat-step [stepControl]="step1.form" errorMessage="Landing page in error">
+
+            <ng-template matStepLabel>Tutorial Details</ng-template>
+
+            <app-tutorial-create-part-a #step1></app-tutorial-create-part-a>
+
+            <div class="stepper-buttons">
+
+                <button mat-raised-button color="primary" [disabled]="!step1.form.valid || !step1.form.value.iconUrl" matStepperNext>Next</button>
+            </div>
+
+        </mat-step>
+
+
+        <mat-step [stepControl]="step2.form" errorMessage="Sections in error">
+
+            <app-tutorial-create-part-b #step2></app-tutorial-create-part-b>
+
+            <ng-template matStepLabel>Tutorial Sections</ng-template>
+
+            <div class="stepper-buttons">
+
+                <button mat-raised-button matStepperPrevious>Back</button>
+
+                <button mat-raised-button color="primary"
+                    [disabled]="!step2.form.valid || step2.sections.length == 0"
+                    (click)="submit(step1.form.value, step2.form.value)">
+                    Create Tutorial
+                </button>
+
+            </div>
+
+
+        </mat-step>
+
+    </mat-horizontal-stepper>
+
+
+</div>
+
+
+<div class="scrolling-space">
+
+
+</div>

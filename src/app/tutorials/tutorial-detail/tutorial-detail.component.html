@@ -1,0 +1,76 @@
+<div class="container">
+  <div class="course row" *ngIf="(tutorial$ | async) as tutorial">
+    <div class="col-5">
+      <img [src]="tutorial.iconUrl" class="course-thumbnail mat-elevation-z8">
+    </div>
+    <div class="col-7">
+      <div class="row" style="margin: 20px auto;text-align:left;">
+        <div class="col-8">
+
+          <h2>{{tutorial.description}}</h2>
+        </div>
+        <div class="col-2">
+          <button mat-mini-fab color="accent" *ngIf="!!(canshow)" (click)="editTutorial(tutorial)">
+            <mat-icon class="add-course-btn" >edit</mat-icon>
+          </button>
+        </div>
+        <div class="col-2">
+          <button mat-mini-fab color="danger" *ngIf="!!(canshow)" (click)="deleteTutorial()">
+            <mat-icon class="add-course-btn" >delete</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="row" style="margin: 20px auto;text-align:left;">
+        <p>{{tutorial.longDescription}}</p>
+      </div>
+      <div class="row" style="margin: 20px auto;text-align:left;">
+        <p><strong>Author :</strong> {{ownerDisplayName}}</p>
+      </div>
+    </div>
+
+
+
+  </div>
+
+
+  <div class="spinner-container" *ngIf="loading">
+
+      <mat-spinner></mat-spinner>
+
+  </div>
+
+  <div class="section-container row" *ngIf="(sections$ | async) as sections">
+    <mat-tab-group dynamicHeight [color]="'accent'" [backgroundColor]="'primary'" animationDuration="1000ms">
+      <mat-tab
+        class="mat-tab"
+        *ngFor="let sectionEl of sections; let index = index"
+        label="Section {{ index + 1 }}"
+      >
+        <app-tutorial-section
+          [section]="sectionEl"
+          [canShow]="!!canshow"
+        ></app-tutorial-section>
+      </mat-tab>
+      <mat-tab *ngIf="!!(canshow)" >
+        <ng-template mat-tab-label>
+          <mat-icon class="add-course-btn" >add</mat-icon>
+
+        </ng-template>
+        <div class="container" style="justify-content:center;margin: 25px auto; padding: 25px auto;">
+
+          <h1>Add New Section</h1>
+          <button color="accent" (click)="addSection()">
+            Add Section
+          </button>
+        </div>
+    </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
+
+
+
+
+
+
+

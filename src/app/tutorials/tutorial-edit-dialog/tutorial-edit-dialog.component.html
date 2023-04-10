@@ -1,0 +1,76 @@
+
+<h2 mat-dialog-title>Tutorial About</h2>
+
+<mat-dialog-content>
+
+  <ng-container *ngIf="form">
+
+    <ng-container [formGroup]="form">
+
+      <mat-form-field>
+
+        <input matInput
+               placeholder="Tutorial Title"
+               formControlName="description">
+
+      </mat-form-field>
+
+      <mat-form-field>
+
+        <input matInput
+                placeholder="Tutorial Field"
+                formControlName="field">
+
+      </mat-form-field>
+      <mat-form-field>
+
+        <textarea matInput placeholder="Description"
+                  formControlName="longDescription">
+
+        </textarea>
+
+      </mat-form-field>
+
+      <div class="section-image-upload">
+
+        <span>Tutorial Image:</span>
+
+        <img class="section-thumbnail mat-elevation-z3"
+             [src]="iconUrl"
+             *ngIf="iconUrl">
+
+        <input type="file" (change)="uploadFile($event)">
+        <div class="upload-progress" *ngIf="(percentageChanges$ | async) as percentage">
+
+          <mat-progress-bar class="progress-bar"
+                            mode="determinate"
+           [value]="percentage">
+
+          </mat-progress-bar>
+
+          <span>{{percentage / 100 | percent}}</span>
+
+        </div>
+      </div>
+    </ng-container>
+
+  </ng-container>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+
+  <button mat-raised-button (click)="onClose()">
+    Close
+  </button>
+
+  <button mat-raised-button color="primary"
+          [disabled]="!form.valid || !form.value.iconUrl" (click)="onSave()">
+    Save
+  </button>
+
+</mat-dialog-actions>
+
+
+
+
