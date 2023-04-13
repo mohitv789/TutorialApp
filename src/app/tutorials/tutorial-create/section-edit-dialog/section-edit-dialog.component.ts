@@ -1,7 +1,7 @@
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable, catchError, concatMap, last, tap, throwError } from 'rxjs';
 import { Validators, FormBuilder } from '@angular/forms';
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, AfterViewInit, ViewChild } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Component({
@@ -9,14 +9,14 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
   templateUrl: './section-edit-dialog.component.html',
   styleUrls: ['./section-edit-dialog.component.css']
 })
-export class SectionEditDialogComponent implements OnInit{
+export class SectionEditDialogComponent implements OnInit {
+
   sectionForm = this.fb.group({
     description: ['', Validators.required],
     seqNo: ['', Validators.required],
     solution: ['', Validators.required],
     image: ['', Validators.required],
   });
-
   percentageChanges$!: Observable<any>;
   tutorialId!: string;
   image!: string;
@@ -32,14 +32,13 @@ export class SectionEditDialogComponent implements OnInit{
 
     this.tutorialId = JSON.parse(localStorage.getItem("STEP_1_ID")!)
   }
+
   onClose() {
       this.dialogRef.close();
   }
 
   onSave() {
-
     this.dialogRef.close({data:this.sectionForm});
-
   }
 
   uploadFile(event: any) {

@@ -1,7 +1,9 @@
-<div class="container">
+<div class="container" (tutorialChanged)="reload()">
   <div class="course row" *ngIf="(tutorial$ | async) as tutorial">
     <div class="col-5">
-      <img [src]="tutorial.iconUrl" class="course-thumbnail mat-elevation-z8">
+      <a [href]="tutorial.iconUrl" target="_blank">
+        <img [src]="tutorial.iconUrl" class="course-thumbnail mat-elevation-z8">
+      </a>
     </div>
     <div class="col-7">
       <div class="row" style="margin: 20px auto;text-align:left;">
@@ -20,8 +22,11 @@
           </button>
         </div>
       </div>
+      <div class="progress" style="height: 20px;">
+        <div class="progress-bar" role="progressbar" [style.width.%]="percentCompletion" [attr.aria-valuenow]="percentCompletion" aria-valuemin="0" aria-valuemax="100">{{percentCompletion}}%</div>
+      </div>
       <div class="row" style="margin: 20px auto;text-align:left;">
-        <p>{{tutorial.longDescription}}</p>
+        <p [innerHTML]="tutorial.longDescription"></p>
       </div>
       <div class="row" style="margin: 20px auto;text-align:left;">
         <p><strong>Author :</strong> {{ownerDisplayName}}</p>
@@ -56,12 +61,13 @@
           <mat-icon class="add-course-btn" >add</mat-icon>
 
         </ng-template>
-        <div class="container" style="justify-content:center;margin: 25px auto; padding: 25px auto;">
+        <div class="container" style="display: grid;justify-content: center;;margin:25px auto;padding:25px auto;">
 
           <h1>Add New Section</h1>
-          <button color="accent" (click)="addSection()">
+          <button style="background-color: #008CBA;" (click)="addSection()">
             Add Section
           </button>
+
         </div>
     </mat-tab>
     </mat-tab-group>

@@ -25,12 +25,10 @@
 
       <mat-form-field>
 
-        <textarea matInput placeholder="Solution"
-                  formControlName="solution" cdkTextareaAutosize
-                  cdkAutosizeMinRows="5"
-                  cdkAutosizeMaxRows="8">
-
-        </textarea>
+        <quill-material
+          formControlName="solution"
+          placeholder="Your Solution here"
+        ></quill-material>
 
       </mat-form-field>
 

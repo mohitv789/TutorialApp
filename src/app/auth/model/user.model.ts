@@ -5,6 +5,15 @@ export interface IUser {
   profilePic? : string;
   loading?: boolean;
   error?: string;
+  inProgressSections? : {
+    tutorialId: string,
+    sectionId: string,
+    progress: string
+  }[],
+  completedSections? : {
+    tutorialId: string,
+    sectionId: string
+  }[],
 }
 
 export class User {

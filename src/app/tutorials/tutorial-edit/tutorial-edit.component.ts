@@ -68,7 +68,6 @@ export class TutorialEditComponent implements OnInit{
       this.store.dispatch(SectionUpdated({update}));
     } else if (!section.id) {
       this.store.dispatch(SectionSaved({tutorialId:this.tutorialId,section: section}));
-      console.log({...this.form.value})
     }
 
 

@@ -2,11 +2,13 @@
   <div class="container">
     <div class="section row">
       <div class="col-5">
-        <img
-          [src]="section.image"
-          alt="{{ section.image }}"
-          class="section-thumbnail"
-        />
+        <a [href]="section.image" target="_blank">
+          <img
+            [src]="section.image"
+            alt="{{ section.image }}"
+            class="section-thumbnail"
+          />
+        </a>
       </div>
       <div class="col-7">
         <div class="row" style="margin: 20px auto;text-align:left;">
@@ -21,10 +23,18 @@
           <div class="row" style="margin: 20px auto;text-align:left;">
             <p><strong>Description : </strong>{{ section.description }}</p>
 
-            <p><strong>Solution : </strong>{{ section.solution }}</p>
+            <p><strong>Solution : </strong><span [innerHTML]="section.solution"></span></p>
           </div>
         </div>
 
+      </div>
+    </div>
+    <div class="row">
+      <div *ngIf="!iscompleted" class="row">
+        <button style="margin: 20px auto; width: 100px; text-align: center; background-color: forestgreen;" (click)="markComplete()"><mat-icon>check_circle</mat-icon></button>
+      </div>
+      <div *ngIf="iscompleted" class="row" >
+        <p style="margin: 20px auto; width: 300px; text-align: center; background-color: forestgreen;">You have completed this section!</p>
       </div>
     </div>
   </div>

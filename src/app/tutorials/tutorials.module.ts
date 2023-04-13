@@ -31,12 +31,14 @@ import { TutorialsListComponent } from './tutorials-list/tutorials-list.componen
 import { TutorialEditComponent } from './tutorial-edit/tutorial-edit.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { TutorialsHttpService } from './services/tutorials-http.service';
-
 import { TutorialsResolver } from './tutorials.resolver';
 import { MatStepperModule } from '@angular/material/stepper';
 import { TutorialSectionComponent } from './tutorial-detail/tutorial-section/tutorial-section.component';
 import { TutorialResolver } from './tutorial.resolver';
 import { TutorialDeleteComponent } from './tutorial-delete/tutorial-delete.component';
+import { QuillModule } from 'ngx-quill';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { QuillMaterialComponent } from './shared/my-quill-component';
 
 export const tutorialsRoutes: Routes = [
   {
@@ -88,10 +90,12 @@ export const tutorialsRoutes: Routes = [
     MatStepperModule,
     MatDatepickerModule,
     ReactiveFormsModule,
+    MatFormFieldModule,
     RouterModule.forChild(tutorialsRoutes),
     EffectsModule.forFeature([TutorialsEffects]),
     StoreModule.forFeature("tutorials", tutorialsReducer),
-    StoreModule.forFeature("sections", sectionsReducer)
+    StoreModule.forFeature("sections", sectionsReducer),
+    QuillModule.forRoot()
   ],
   declarations: [
       HomeComponent,
@@ -104,7 +108,8 @@ export const tutorialsRoutes: Routes = [
       TutorialCreatePartBComponent,
       TutorialSectionComponent,
       SectionEditDialogComponent,
-      TutorialDeleteComponent
+      TutorialDeleteComponent,
+      QuillMaterialComponent
   ],
 
   exports: [
@@ -117,8 +122,8 @@ export const tutorialsRoutes: Routes = [
       TutorialCreatePartAComponent,
       TutorialCreatePartBComponent,
       TutorialSectionComponent,
-      TutorialDeleteComponent
-
+      TutorialDeleteComponent,
+      QuillMaterialComponent
   ],
   entryComponents: [
     TutorialEditDialogComponent,

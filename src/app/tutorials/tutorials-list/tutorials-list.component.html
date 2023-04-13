@@ -11,7 +11,7 @@
   <img mat-card-image [src]="tutorial.iconUrl" style="max-width: 400px;justify-content: center;">
 
   <mat-card-content style="text-align: center;">
-      <p>{{tutorial.longDescription?.slice(0,100)}}</p>
+    <p [innerHTML]="tutorial.longDescription?.slice(0,100)"></p>
   </mat-card-content>
 
   <mat-card-actions class="course-actions">

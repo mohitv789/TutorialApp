@@ -16,6 +16,11 @@ export const allTutorialsLoaded = createAction(
     props<{tutorials: Tutorial[]}>()
 );
 
+export const singleTutorialLoaded = createAction(
+  "[Load Tutorials Effect] Single Tutorial Loaded",
+  props<{tutorial: Tutorial}>()
+);
+
 export const tutorialUpdated = createAction(
   "[Edit Tutorial Dialog] Tutorial Updated",
   props<{update: Update<Tutorial>}>()

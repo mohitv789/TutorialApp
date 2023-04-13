@@ -13,6 +13,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { TutorialEditDialogComponent } from '../tutorial-edit-dialog/tutorial-edit-dialog.component';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { TutorialDeleteComponent } from '../tutorial-delete/tutorial-delete.component';
+import { UserService } from 'src/app/auth/user.service';
 
 @Component({
   selector: 'app-tutorial-detail',
@@ -27,7 +28,7 @@ export class TutorialDetailComponent implements OnInit {
   loading = false;
   private sectionsSubject = new BehaviorSubject<Section[]>([]);
   canshow: boolean = false;
-
+  percentCompletion!: number;
   @Output()
   tutorialChanged = new EventEmitter();
 
@@ -38,7 +39,7 @@ export class TutorialDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private store: Store<AppState>,
     private dialog: MatDialog,
-    private db: AngularFirestore) {
+    private db: AngularFirestore,private user: UserService) {
 
   }
 
@@ -57,21 +58,33 @@ export class TutorialDetailComponent implements OnInit {
       this.sections$ = this.store.pipe(select(selectSections(this.id)));
       if (!!this.tutorial$) {
         this.tutorial$.subscribe((result: Tutorial) => {
-
+          this.db.collection("users").doc(result.owner).get().subscribe((res:any) => {
+            this.ownerDisplayName = res.data()["displayName"]
+          });
           if (result.owner.toString() == JSON.parse(localStorage.getItem("user")!).uid.toString()) {
             this.canshow = true;
           }
         })
       }
-
-
       this.user_id = JSON.parse(localStorage.getItem("user")!).uid;
-      this.db.collection("users").doc(this.user_id).get().subscribe((res:any) => {
-        this.ownerDisplayName = res.data()["displayName"]
-      });
-      
-      
+      const overallCompletedSections = this.user.checkCompletionSections(JSON.parse(localStorage.getItem("user")!).uid);
+      setTimeout(() => {
+        this.sections$.subscribe((sections: Section[]) => {
+          let numberCompleted = 0;
+          sections.forEach((section) => {
+            for (let index = 0; index < overallCompletedSections.length; index++)
+            {
+              if (section.id.toString() == overallCompletedSections[index].toString()) {
+                numberCompleted += 1;
+              }
+            }
+          })
+          this.percentCompletion = Math.floor(100 * (numberCompleted/(sections.length)));
+
+        })
+      }, 250);
   }
+
   loadSectionsPage() {
 
     this.store
@@ -160,5 +173,11 @@ export class TutorialDetailComponent implements OnInit {
     } else {
       alert("You do not have rights to delete this tutorial!")
     }
+  }
+
+  reload() {
+
+    this.tutorial$ = this.store.pipe(select(selectTutorialById(this.id)));
+
   }
 }

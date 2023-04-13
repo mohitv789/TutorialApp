@@ -1,6 +1,6 @@
 import { SectionsLoaded, SectionUpdated, SectionsRequested, SectionSaved } from './section.actions';
 import { allTutorialsLoaded } from './tutorials.actions';
-
+import { singleTutorialLoaded } from './tutorials.actions';
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {concatMap, map, mergeMap} from 'rxjs/operators';
@@ -33,7 +33,16 @@ export class TutorialsEffects {
           )
   );
 
+  loadSingleTutorial$ = createEffect(
+    () => this.actions$
+        .pipe(
+            ofType(TutorialActions.singleTutorialRequested),
+            concatMap(action =>
+                this.tutorialsHttpService.findTutorialById(action.tutorialId)),
+            map(tutorial => singleTutorialLoaded({tutorial}))
 
+        )
+  );
     editTutorial$ = createEffect(
         () => this.actions$
             .pipe(
@@ -90,7 +99,7 @@ deleteSection$ = createEffect(
             ))
     ),
     {dispatch: false});
-    
+
     constructor(private actions$: Actions,
                 private tutorialsHttpService: TutorialsHttpService) {
 

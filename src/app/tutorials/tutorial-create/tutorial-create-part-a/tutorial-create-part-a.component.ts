@@ -20,8 +20,7 @@ export class TutorialCreatePartAComponent {
     description: ['', {
         validators: [
             Validators.required,
-            Validators.minLength(10),
-            Validators.maxLength(60)
+            Validators.maxLength(100)
         ],
     }],
     longDescription: ['', {

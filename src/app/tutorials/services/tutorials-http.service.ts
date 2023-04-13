@@ -29,14 +29,14 @@ export class TutorialsHttpService {
         )
     }
 
-    findTutorialById(tutorialId: string): Observable<Tutorial | null> {
+    findTutorialById(tutorialId: string): Observable<Tutorial> {
       return this.db.collection("tutorials",
             ref => ref.where("id", "==", tutorialId))
             .get()
             .pipe(
               map(results => {
                   const tutorials = convertSnaps<Tutorial>(results);
-                  return tutorials.length == 1 ? tutorials[0] : null;
+                  return tutorials[0];
 
               })
             );

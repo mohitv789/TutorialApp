@@ -5,6 +5,7 @@ export interface Section {
     tutorialId: string;
     solution: string;
     image?: string;
+    time?: string;
 }
 
 export function compareSections(s1:Section, s2: Section) {
