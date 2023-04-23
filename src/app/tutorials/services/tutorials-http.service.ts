@@ -13,8 +13,9 @@ import { Store } from '@ngrx/store';
 import { loadAllTutorials } from '../tutorials.actions';
 
 
-
-@Injectable()
+@Injectable({
+  providedIn: "root"
+})
 export class TutorialsHttpService {
 
     constructor(private db: AngularFirestore,private store: Store<AppState>) {

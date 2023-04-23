@@ -7,7 +7,6 @@ export interface Tutorial {
   longDescription?: string;
   field: string;
   owner: string;
-  completion?: number;
 }
 
 

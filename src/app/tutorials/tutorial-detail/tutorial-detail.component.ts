@@ -3,7 +3,7 @@ import { SectionsRequested } from './../section.actions';
 import { selectSections } from './../sections.selector';
 import { selectTutorialById } from './../tutorials.selectors';
 import { AppState } from './../../reducers/index';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnChanges, OnInit, Output } from '@angular/core';
 import { BehaviorSubject, Observable, catchError, map, of, tap } from 'rxjs';
 import { Tutorial } from '../models/Tutorial';
 import { Section } from '../models/Section';
@@ -13,7 +13,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { TutorialEditDialogComponent } from '../tutorial-edit-dialog/tutorial-edit-dialog.component';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { TutorialDeleteComponent } from '../tutorial-delete/tutorial-delete.component';
-import { UserService } from 'src/app/auth/user.service';
+import { FeedHttpService } from 'src/app/feed/feed.service';
 
 @Component({
   selector: 'app-tutorial-detail',
@@ -23,6 +23,7 @@ import { UserService } from 'src/app/auth/user.service';
 export class TutorialDetailComponent implements OnInit {
   tutorial$!: Observable<any>;
   sections$!: Observable<any>;
+  overallCompletedSections!: string[];
   ownerDisplayName!: string;
   id!: string;
   loading = false;
@@ -30,7 +31,9 @@ export class TutorialDetailComponent implements OnInit {
   canshow: boolean = false;
   percentCompletion!: number;
   @Output()
-  tutorialChanged = new EventEmitter();
+  tutorialChanged = new EventEmitter<boolean>();
+
+  reloadNeeded: boolean = false;
 
   nextPage = 0;
   user_id!: string;
@@ -39,7 +42,7 @@ export class TutorialDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private store: Store<AppState>,
     private dialog: MatDialog,
-    private db: AngularFirestore,private user: UserService) {
+    private db: AngularFirestore,private fService: FeedHttpService) {
 
   }
 
@@ -67,14 +70,17 @@ export class TutorialDetailComponent implements OnInit {
         })
       }
       this.user_id = JSON.parse(localStorage.getItem("user")!).uid;
-      const overallCompletedSections = this.user.checkCompletionSections(JSON.parse(localStorage.getItem("user")!).uid);
+
+      this.fService.checkCompletionSections(this.id).then((result: string[]) => {
+        this.overallCompletedSections = result
+      });
       setTimeout(() => {
         this.sections$.subscribe((sections: Section[]) => {
           let numberCompleted = 0;
           sections.forEach((section) => {
-            for (let index = 0; index < overallCompletedSections.length; index++)
+            for (let index = 0; index < this.overallCompletedSections.length; index++)
             {
-              if (section.id.toString() == overallCompletedSections[index].toString()) {
+              if (section.id.toString() == this.overallCompletedSections[index].toString()) {
                 numberCompleted += 1;
               }
             }
@@ -119,7 +125,7 @@ export class TutorialDetailComponent implements OnInit {
       .afterClosed()
       .subscribe(val => {
         if (val) {
-            this.tutorialChanged.emit();
+            this.tutorialChanged.emit(true);
         }
       });
     } else {
@@ -141,7 +147,6 @@ export class TutorialDetailComponent implements OnInit {
       .subscribe(val => {
         if (val) {
             console.log(val);
-            this.tutorialChanged.emit();
         }
     });
 
@@ -168,16 +173,14 @@ export class TutorialDetailComponent implements OnInit {
         .afterClosed()
         .subscribe(val => {
           console.log(val);
-          this.tutorialChanged.emit();
+          this.tutorialChanged.emit(true);
       });
     } else {
       alert("You do not have rights to delete this tutorial!")
     }
   }
 
-  reload() {
-
-    this.tutorial$ = this.store.pipe(select(selectTutorialById(this.id)));
-
+  reloadTutorial() {
+    this.ngOnInit();
   }
 }

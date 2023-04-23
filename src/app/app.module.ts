@@ -18,7 +18,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from './environments/environment';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { RouterModule, Routes } from '@angular/router';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth/auth.guard';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import {AngularFireFunctionsModule} from '@angular/fire/compat/functions';
@@ -30,12 +30,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { QuillModule } from 'ngx-quill';
+import { TutorialsHttpService } from './tutorials/services/tutorials-http.service';
+import { FeedHttpService } from './feed/feed.service';
 const routes: Routes = [
   {
-      path: 'tutorials',
-      loadChildren: () => import('./tutorials/tutorials.module').then(m => m.TutorialsModule),
-      canActivate: [AuthGuard]
+    path: 'tutorials',
+    loadChildren: () => import('./tutorials/tutorials.module').then(m => m.TutorialsModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'userfeed',
+    loadChildren: () => import('./feed/feed.module').then(m => m.FeedModule),
+    canActivate: [AuthGuard]
   },
   {
       path: '**',
@@ -50,7 +56,9 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    RouterModule.forRoot(routes, {}),
+    RouterModule.forRoot(routes,   {
+      preloadingStrategy: PreloadAllModules
+    }),
     HttpClientModule,
     MatMenuModule,
     MatIconModule,
@@ -88,11 +96,12 @@ const routes: Routes = [
     })
   ],
   providers: [
-  {
-    provide: HTTP_INTERCEPTORS,
-    useClass: AuthInterceptor,
-    multi: true
-  }],
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 

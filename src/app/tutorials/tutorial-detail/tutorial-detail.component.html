@@ -1,4 +1,4 @@
-<div class="container" (tutorialChanged)="reload()">
+<div class="container">
   <div class="course row" *ngIf="(tutorial$ | async) as tutorial">
     <div class="col-5">
       <a [href]="tutorial.iconUrl" target="_blank">
@@ -52,6 +52,7 @@
         label="Section {{ index + 1 }}"
       >
         <app-tutorial-section
+          (sectionChanged)="reloadTutorial()"
           [section]="sectionEl"
           [canShow]="!!canshow"
         ></app-tutorial-section>

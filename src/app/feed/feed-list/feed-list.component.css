@@ -1,0 +1,17 @@
+
+
+.course-card {
+  display:flex;
+  flex-direction:column;
+  margin: 20px 10px;
+}
+
+.course-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.course-actions button {
+  margin-right: 5px;
+}
+

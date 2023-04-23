@@ -8,6 +8,7 @@ import { isLoggedIn, isLoggedOut } from './auth/auth.selectors';
 import { UserService } from './auth/user.service';
 import { selectAllTutorials } from './tutorials/tutorials.selectors';
 import { loadAllTutorials } from './tutorials/tutorials.actions';
+import { FeedHttpService } from './feed/feed.service';
 
 @Component({
   selector: 'app-root',
@@ -64,8 +65,6 @@ export class AppComponent implements OnInit{
           .pipe(
               select(isLoggedOut)
           );
-
-
   }
 
   logout() {

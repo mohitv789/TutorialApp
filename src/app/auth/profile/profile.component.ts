@@ -2,11 +2,10 @@ import { concatMap } from 'rxjs/operators';
 import { last, tap, catchError, throwError } from 'rxjs';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { AppState } from './../../reducers/index';
-import { AuthService } from './../auth.service';
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { updateProfile } from '../auth.actions';
 import { UserService } from '../user.service';
 
@@ -25,7 +24,7 @@ export class ProfileComponent implements OnInit{
       private user: UserService,
       private router:Router,
       private store: Store<AppState>,
-      private storage: AngularFireStorage) {
+      private storage: AngularFireStorage,) {
 
       this.form = fb.group({
           displayName: this.fb.control([this.displayName, [Validators.required]]),
@@ -41,7 +40,7 @@ export class ProfileComponent implements OnInit{
     setTimeout(() => {
       this.form.patchValue({displayName: this.displayName});
     },200);
-    
+
   }
 
   updateProfile(event: Event) {
@@ -84,4 +83,5 @@ export class ProfileComponent implements OnInit{
             )
             .subscribe();
   }
+
 }

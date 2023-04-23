@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Observable, map } from 'rxjs';
 import { defaultDialogConfig } from '../shared/default-dialog-config';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FeedHttpService } from 'src/app/feed/feed.service';
 
 
 @Component({
@@ -24,13 +25,12 @@ export class HomeComponent implements OnInit{
     private dialog: MatDialog,
     private store: Store<AppState>,
     private router: Router,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private feedService: FeedHttpService) {
       this.tutorials$ = this.store.pipe(select(selectAllTutorials));
   }
 
-  ngOnInit() {
-    this.reload();
-  }
+  ngOnInit() {}
 
   reload() {
 

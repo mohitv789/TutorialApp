@@ -1,0 +1,20 @@
+<div class="tutorials-panel">
+  <mat-tab-group>
+    <mat-tab label="In-Progress Tutorials">
+
+      <app-feed-list [tutorials]="inprogressTutorials">
+
+      </app-feed-list>
+
+    </mat-tab>
+
+    <mat-tab label="Completed Tutorials">
+
+        <app-feed-list [tutorials]="compTutorials">
+
+        </app-feed-list>
+
+    </mat-tab>
+
+  </mat-tab-group>
+</div>

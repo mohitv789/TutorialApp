@@ -1,6 +1,6 @@
 import { Section } from './../models/Section';
 import { AppState } from './../../reducers/index';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
@@ -20,6 +20,8 @@ export class TutorialEditComponent implements OnInit{
   tutorialId!: string;
   image!: string;
   percentageChanges$!: Observable<any>;
+  @Output()
+  sectionAdded = new EventEmitter<boolean>();
   constructor(
       private route: ActivatedRoute,
       private fb: UntypedFormBuilder,
@@ -70,7 +72,7 @@ export class TutorialEditComponent implements OnInit{
       this.store.dispatch(SectionSaved({tutorialId:this.tutorialId,section: section}));
     }
 
-
+    this.sectionAdded.emit(true);
 
     this.dialogRef.close();
 
